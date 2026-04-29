@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3/"
+     xml:base="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:untitled-ontology-3="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#containMedicine -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#containMedicine">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#deliveredBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#deliveredBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#DeliveryPerson"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#placesOrder -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#placesOrder">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#User"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#providedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#providedBy">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Pharmacy"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#requiresPrescription -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#requiresPrescription">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#DeliveryPerson -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#DeliveryPerson"/>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine"/>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order"/>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Pharmacy -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Pharmacy"/>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription"/>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#User -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#User"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Ayse -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Ayse">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#User"/>
+        <untitled-ontology-3:placesOrder rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order001"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Courier1 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Courier1">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#DeliveryPerson"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order001 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order001">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Order"/>
+        <untitled-ontology-3:containMedicine rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Paracetamol"/>
+        <untitled-ontology-3:deliveredBy rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Courier1"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Paracetamol -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Paracetamol">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Medicine"/>
+        <untitled-ontology-3:providedBy rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#PharmacyA"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#PharmacyA -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#PharmacyA">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Pharmacy"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription123 -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription123">
+        <rdf:type rdf:resource="http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#Prescription"/>
+    </owl:NamedIndividual>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
