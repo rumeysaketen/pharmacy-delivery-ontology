@@ -1,0 +1,16 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 6: COUNT Orders by Status (Aggregation)
+#  CQ5: How many orders exist in each delivery status?
+# ============================================================
+
+SELECT ?orderStatus (COUNT(?order) AS ?orderCount)
+WHERE {
+    ?order rdf:type pdo:Order .
+    ?order pdo:orderStatus ?orderStatus .
+}
+GROUP BY ?orderStatus
+ORDER BY DESC(?orderCount)

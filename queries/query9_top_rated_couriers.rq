@@ -1,0 +1,27 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 9: Top-Rated Couriers (Reasoning / Filtering)
+#  CQ3: Which couriers have a rating above 4.7 and how many
+#       completed deliveries do they have?
+# ============================================================
+
+SELECT ?firstName ?lastName ?courierID ?vehicleType ?rating
+       (COUNT(?order) AS ?totalOrders)
+       (COUNT(IF(?orderStatus = "delivered"^^xsd:string, 1, ?null)) AS ?deliveredOrders)
+WHERE {
+    ?courier rdf:type pdo:DeliveryPerson .
+    ?courier pdo:rating ?rating .
+    ?order pdo:deliveredBy ?courier .
+    ?order pdo:orderStatus ?orderStatus .
+    OPTIONAL { ?courier pdo:firstName ?firstName . }
+    OPTIONAL { ?courier pdo:lastName ?lastName . }
+    OPTIONAL { ?courier pdo:courierID ?courierID . }
+    OPTIONAL { ?courier pdo:vehicleType ?vehicleType . }
+
+    FILTER (?rating >= 4.7)
+}
+GROUP BY ?firstName ?lastName ?courierID ?vehicleType ?rating
+ORDER BY DESC(?rating)

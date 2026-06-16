@@ -1,0 +1,29 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+# ============================================================
+#  QUERY 8: Over-the-Counter (OTC) Medicines
+#  CQ7: Which medicines are available without a prescription
+#       and what pharmacies stock them?
+# ============================================================
+
+SELECT ?medicineName ?brandName ?dosageForm ?strength ?price
+       ?stockQuantity ?pharmacyName ?city
+WHERE {
+    ?medicine rdf:type pdo:Medicine .
+    ?medicine pdo:medicineName ?medicineName .
+    ?medicine pdo:providedBy ?pharmacy .
+    ?pharmacy pdo:pharmacyName ?pharmacyName .
+    OPTIONAL { ?medicine pdo:brandName ?brandName . }
+    OPTIONAL { ?medicine pdo:dosageForm ?dosageForm . }
+    OPTIONAL { ?medicine pdo:strength ?strength . }
+    OPTIONAL { ?medicine pdo:price ?price . }
+    OPTIONAL { ?medicine pdo:stockQuantity ?stockQuantity . }
+    OPTIONAL { ?pharmacy pdo:city ?city . }
+
+    # OTC = no requiresPrescription link exists
+    FILTER NOT EXISTS {
+        ?medicine pdo:requiresPrescription ?prescription .
+    }
+}
+ORDER BY ?medicineName

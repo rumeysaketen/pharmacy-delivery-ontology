@@ -1,0 +1,24 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 10: Most Expensive Order per User (Aggregation + Subquery)
+#  CQ4: For each user, what is their most expensive order and
+#       what total amount have they spent in total?
+# ============================================================
+
+SELECT ?firstName ?lastName ?email
+       (COUNT(?order) AS ?totalOrders)
+       (SUM(?totalPrice) AS ?totalSpent)
+       (MAX(?totalPrice) AS ?maxOrderPrice)
+WHERE {
+    ?user rdf:type pdo:User .
+    ?user pdo:placesOrder ?order .
+    ?order pdo:totalPrice ?totalPrice .
+    OPTIONAL { ?user pdo:firstName ?firstName . }
+    OPTIONAL { ?user pdo:lastName ?lastName . }
+    OPTIONAL { ?user pdo:email ?email . }
+}
+GROUP BY ?firstName ?lastName ?email
+ORDER BY DESC(?totalSpent)

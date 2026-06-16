@@ -1,0 +1,24 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 7: Average Delivery Fee per Pharmacy (Aggregation)
+#  CQ6: What is the average delivery fee for orders dispatched
+#       from each pharmacy?
+# ============================================================
+
+SELECT ?pharmacyName ?city
+       (COUNT(?order) AS ?orderCount)
+       (AVG(?deliveryFee) AS ?avgDeliveryFee)
+       (SUM(?totalPrice) AS ?totalRevenue)
+WHERE {
+    ?order rdf:type pdo:Order .
+    ?order pdo:dispatchedFromPharmacy ?pharmacy .
+    ?order pdo:deliveryFee ?deliveryFee .
+    ?order pdo:totalPrice ?totalPrice .
+    ?pharmacy pdo:pharmacyName ?pharmacyName .
+    OPTIONAL { ?pharmacy pdo:city ?city . }
+}
+GROUP BY ?pharmacyName ?city
+ORDER BY DESC(?totalRevenue)
