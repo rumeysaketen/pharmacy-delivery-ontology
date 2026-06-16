@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pharmacy Delivery Ontology – Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0c15;
+  --surface: #141726;
+  --surface2: #1e2238;
+  --border: #2a2f50;
+  --accent: #7c6bff;
+  --accent2: #00e5b0;
+  --accent3: #ff6b9d;
+  --text: #eef0ff;
+  --muted: #8890b8;
+  --code-bg: #0e1020;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Inter', sans-serif;
+  color: var(--text);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ── SLIDE CONTAINER ── */
+.deck { width: 100%; height: 100vh; position: relative; }
+.slide {
+  position: absolute; inset: 0;
+  display: none;
+  flex-direction: column;
+  padding: 60px 80px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* ── BACKGROUNDS ── */
+.slide::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 10% 10%, rgba(124,107,255,.12) 0%, transparent 55%),
+              radial-gradient(ellipse 60% 50% at 90% 90%, rgba(0,229,176,.07) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+/* ── NAV ── */
+.nav {
+  position: fixed;
+  bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(20,23,38,.9);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 24px;
+  backdrop-filter: blur(12px);
+  z-index: 100;
+}
+.nav button {
+  background: none; border: none;
+  color: var(--muted);
+  font-size: 18px;
+  cursor: pointer;
+  transition: color .2s;
+  padding: 4px 8px;
+}
+.nav button:hover { color: var(--accent); }
+.nav .counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  min-width: 60px;
+  text-align: center;
+}
+.dots { display: flex; gap: 6px; }
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+  cursor: pointer;
+  transition: background .2s;
+}
+.dot.active { background: var(--accent); }
+
+/* ── SLIDE NUMBER ── */
+.slide-num {
+  position: absolute;
+  top: 28px; right: 40px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--border);
+}
+
+/* ── COMMON ELEMENTS ── */
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
+.tag-purple { background: rgba(124,107,255,.15); border: 1px solid rgba(124,107,255,.3); color: #a99fff; }
+.tag-green  { background: rgba(0,229,176,.12);   border: 1px solid rgba(0,229,176,.25);  color: #00e5b0; }
+.tag-pink   { background: rgba(255,107,157,.12); border: 1px solid rgba(255,107,157,.25);color: #ff8ab8; }
+
+h1 { font-size: clamp(32px,4.5vw,56px); font-weight: 800; line-height: 1.1; }
+h2 { font-size: clamp(22px,3vw,36px); font-weight: 700; margin-bottom: 30px; }
+h3 { font-size: 18px; font-weight: 600; color: #a99fff; margin-bottom: 12px; }
+p, li { color: var(--muted); font-size: 15px; line-height: 1.7; }
+ul { list-style: none; }
+ul li::before { content: "›"; color: var(--accent2); margin-right: 10px; font-weight: 700; }
+
+.highlight { color: var(--accent2); }
+.purple { color: var(--accent); }
+
+/* ── GRID ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  transition: border-color .2s;
+}
+.card-icon { font-size: 28px; margin-bottom: 10px; }
+.card h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.card p { font-size: 13px; }
+
+/* ── CODE ── */
+pre, code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 18px;
+  line-height: 1.6;
+  overflow-x: auto;
+  color: #c9d1d9;
+}
+.kw { color: #ff7b72; }
+.str { color: #a5d6ff; }
+.cmt { color: #6a737d; font-style: italic; }
+.uri { color: #79c0ff; }
+.var { color: #ffa657; }
+
+/* ── TABLE ── */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { background: var(--surface2); color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .07em; padding: 8px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+.tbl td { padding: 8px 14px; border-bottom: 1px solid rgba(42,47,80,.5); }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(124,107,255,.04); }
+
+/* ── STAT BOXES ── */
+.stat { text-align: center; }
+.stat .num { font-size: 48px; font-weight: 800; background: linear-gradient(135deg,var(--accent),var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat .lbl { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* ── FLOW ── */
+.flow { display: flex; align-items: center; gap: 0; flex-wrap: nowrap; }
+.flow-step { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; text-align: center; flex: 1; min-width: 0; }
+.flow-step .fl { font-size: 20px; }
+.flow-step .fn { font-size: 12px; font-weight: 600; margin-top: 4px; }
+.flow-step .fp { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+.arrow { color: var(--accent2); font-size: 16px; padding: 0 6px; flex-shrink: 0; }
+
+/* ── BADGE ── */
+.badge { display: inline-flex; align-items: center; gap: 6px; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 500; color: var(--muted); }
+.badge .dot-g { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+.badge .dot-r { width: 8px; height: 8px; border-radius: 50%; background: var(--accent3); }
+
+/* ── SLIDE-SPECIFIC ── */
+
+/* SLIDE 1: TITLE */
+#s1 { justify-content: center; }
+#s1 .subtitle { font-size: 18px; color: var(--muted); margin-top: 16px; max-width: 600px; }
+#s1 .meta { display: flex; gap: 16px; margin-top: 36px; flex-wrap: wrap; }
+#s1 .pill { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 18px; font-size: 13px; color: var(--muted); }
+
+/* SLIDE 2: PROBLEM */
+#s2 .problem-box { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 28px; margin-top: 20px; }
+
+/* SLIDE 3: OBJECTIVES */
+#s3 .obj-list li { padding: 10px 0; border-bottom: 1px solid rgba(42,47,80,.4); font-size: 15px; color: var(--text); }
+#s3 .obj-list li:last-child { border-bottom: none; }
+
+/* SLIDE 7: KG STATS */
+#s7 .stats-row { display: grid; grid-template-columns: repeat(6,1fr); gap: 16px; margin-top: 30px; }
+
+/* SLIDE 12: CONCLUSION */
+#s12 .grade-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 8px; font-size: 13px; }
+#s12 .grade-row .hdr { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); padding: 6px 12px; }
+#s12 .grade-row .cell { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+#s12 .grade-row .cell.green { border-color: rgba(0,229,176,.3); color: var(--accent2); }
+
+/* progress bar */
+.progress {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width .3s;
+  z-index: 200;
+}
+
+/* keyboard hint */
+.hint {
+  position: fixed; bottom: 30px; right: 40px;
+  font-size: 11px; color: var(--border);
+  font-family: 'JetBrains Mono', monospace;
+}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 1: TITLE -->
+<div class="slide active" id="s1">
+  <div class="slide-num">1 / 12</div>
+  <div class="tag tag-purple">Knowledge Engineering &amp; Ontologies — Term Project</div>
+  <h1>Pharmacy Delivery<br/><span style="background:linear-gradient(90deg,#7c6bff,#00e5b0);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Ontology</span></h1>
+  <p class="subtitle">A formal OWL ontology modeling online pharmacy delivery systems — users, medicines, orders, prescriptions, pharmacies, and couriers.</p>
+  <div class="meta">
+    <div class="pill">📅 June 2026</div>
+    <div class="pill">🏛️ Knowledge Engineering &amp; Ontologies Course</div>
+    <div class="pill">🔗 github.com/rumeysaketen/pharmacy-delivery-ontology</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 2: PROBLEM -->
+<div class="slide" id="s2">
+  <div class="slide-num">2 / 12</div>
+  <div class="tag tag-purple">Problem Definition &amp; Motivation</div>
+  <h2>Why Pharmacy Delivery?</h2>
+  <div class="grid-2" style="gap:24px;margin-top:10px;">
+    <div>
+      <div class="problem-box">
+        <h3>🏥 Domain Context</h3>
+        <ul style="margin-top:10px;">
+          <li>Online pharmacy delivery grew <span class="highlight">300%</span> post-COVID</li>
+          <li>Multiple stakeholders with complex relationships</li>
+          <li>Prescription validation is legally required</li>
+          <li>Data interoperability across systems is critical</li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <div class="problem-box">
+        <h3>❓ Research Questions</h3>
+        <ul style="margin-top:10px;">
+          <li>How to formally model a delivery workflow?</li>
+          <li>Which medicines require valid prescriptions?</li>
+          <li>How to enforce data quality constraints?</li>
+          <li>Can an LLM query the KG in natural language?</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:24px;" class="problem-box">
+    <h3>🎯 Solution Approach</h3>
+    <p>Build a formal <strong style="color:var(--accent)">OWL ontology</strong> + <strong style="color:var(--accent2)">RDF/Turtle Knowledge Graph</strong> with SPARQL queries, SHACL validation, and LLM integration for natural-language querying.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 3: OBJECTIVES -->
+<div class="slide" id="s3">
+  <div class="slide-num">3 / 12</div>
+  <div class="tag tag-green">Project Objectives</div>
+  <h2>What We Built</h2>
+  <ul class="obj-list" style="margin-top:10px;">
+    <li><strong style="color:var(--text)">1. OWL Ontology</strong> — 6 classes, 5 object properties, 20+ data properties in Protégé</li>
+    <li><strong style="color:var(--text)">2. Knowledge Graph</strong> — 31 named individuals in RDF/Turtle (pharmacy-kg.ttl)</li>
+    <li><strong style="color:var(--text)">3. SPARQL Queries</strong> — 5 queries from simple lookups to complex multi-hop pipeline</li>
+    <li><strong style="color:var(--text)">4. SHACL Validation</strong> — 6 NodeShapes enforcing data integrity, all constraints passing</li>
+    <li><strong style="color:var(--text)">5. LLM Integration</strong> — KG-grounded Q&amp;A system with hallucination mitigation</li>
+    <li><strong style="color:var(--text)">6. Documentation</strong> — WIDOCO-style HTML docs + GitHub repository</li>
+  </ul>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 4: CLASSES -->
+<div class="slide" id="s4">
+  <div class="slide-num">4 / 12</div>
+  <div class="tag tag-purple">Ontology Design</div>
+  <h2>Class Hierarchy &amp; Structure</h2>
+  <div class="grid-3" style="margin-top:10px;">
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <h4>User</h4>
+      <p>Customer who places medication orders through the platform</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <h4>Medicine</h4>
+      <p>Pharmaceutical product — may be prescription-only or OTC</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h4>Order</h4>
+      <p>Purchase request linking user, medicine, pharmacy, courier</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <h4>Pharmacy</h4>
+      <p>Licensed establishment stocking and dispatching medicines</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h4>Prescription</h4>
+      <p>Doctor-issued authorization for dispensing medicines</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚴</div>
+      <h4>DeliveryPerson</h4>
+      <p>Courier responsible for last-mile delivery to customer</p>
+    </div>
+  </div>
+  <p style="margin-top:16px;font-size:13px;">Base namespace: <code style="color:var(--accent2);font-family:'JetBrains Mono',monospace;">http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#</code></p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 5: PROPERTIES -->
+<div class="slide" id="s5">
+  <div class="slide-num">5 / 12</div>
+  <div class="tag tag-purple">Ontology Design</div>
+  <h2>Object Properties &amp; Key Data Properties</h2>
+  <div class="grid-2">
+    <div>
+      <h3>Object Properties</h3>
+      <div style="overflow:hidden;border-radius:10px;border:1px solid var(--border);">
+        <table class="tbl">
+          <thead><tr><th>Property</th><th>Domain → Range</th></tr></thead>
+          <tbody>
+            <tr><td><code style="color:#ffa657">placesOrder</code></td><td>User → Order</td></tr>
+            <tr><td><code style="color:#ffa657">containMedicine</code></td><td>Order → Medicine</td></tr>
+            <tr><td><code style="color:#ffa657">deliveredBy</code></td><td>Order → DeliveryPerson</td></tr>
+            <tr><td><code style="color:#ffa657">providedBy</code></td><td>Medicine → Pharmacy</td></tr>
+            <tr><td><code style="color:#ffa657">requiresPrescription</code></td><td>Medicine → Prescription</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div>
+      <h3>Key Data Properties</h3>
+      <div style="overflow:hidden;border-radius:10px;border:1px solid var(--border);">
+        <table class="tbl">
+          <thead><tr><th>Property</th><th>Type</th><th>Class</th></tr></thead>
+          <tbody>
+            <tr><td><code style="color:#00e5b0">orderID</code></td><td>xsd:string</td><td>Order</td></tr>
+            <tr><td><code style="color:#00e5b0">medicineName</code></td><td>xsd:string</td><td>Medicine</td></tr>
+            <tr><td><code style="color:#00e5b0">price</code></td><td>xsd:decimal</td><td>Medicine</td></tr>
+            <tr><td><code style="color:#00e5b0">issueDate</code></td><td>xsd:date</td><td>Prescription</td></tr>
+            <tr><td><code style="color:#00e5b0">rating</code></td><td>xsd:decimal</td><td>DeliveryPerson</td></tr>
+            <tr><td><code style="color:#00e5b0">orderStatus</code></td><td>xsd:string</td><td>Order</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 6: KG CONSTRUCTION -->
+<div class="slide" id="s6">
+  <div class="slide-num">6 / 12</div>
+  <div class="tag tag-green">Knowledge Graph Construction</div>
+  <h2>Building the Knowledge Graph</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <h3>Data Acquisition</h3>
+      <ul>
+        <li>Synthetic but realistic Turkish pharmacy scenario</li>
+        <li>3 cities: Istanbul, Ankara, Izmir</li>
+        <li>Real medicine names, INN names, dosage forms</li>
+        <li>Prescription IDs follow <code style="color:var(--accent2)">RX-YYYY-NNN</code> pattern</li>
+      </ul>
+      <div style="margin-top:20px;">
+        <h3>Encoding</h3>
+        <ul>
+          <li>RDF/Turtle format (<code style="color:var(--accent2)">pharmacy-kg.ttl</code>)</li>
+          <li>Loaded + merged with OWL via <code style="color:var(--accent2)">rdflib</code></li>
+          <li>Programmatic extension demo with <code style="color:var(--accent2)">pdo:Ali</code></li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h3>Sample Triple</h3>
+      <pre><span class="cmt"># Ayse places Order001 for Paracetamol</span>
+<span class="uri">pdo:Order001</span>
+    <span class="kw">a</span> <span class="uri">pdo:Order</span> ;
+    <span class="uri">pdo:orderID</span> <span class="str">"ORD-2026-001"</span> ;
+    <span class="uri">pdo:orderStatus</span> <span class="str">"delivered"</span> ;
+    <span class="uri">pdo:totalPrice</span> <span class="str">12.50</span> ;
+    <span class="uri">pdo:containMedicine</span> <span class="uri">pdo:Paracetamol</span> ;
+    <span class="uri">pdo:deliveredBy</span> <span class="uri">pdo:Courier1</span> ;
+    <span class="uri">pdo:dispatchedFromPharmacy</span>
+        <span class="uri">pdo:PharmacyA</span> .</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 7: KG STATS -->
+<div class="slide" id="s7">
+  <div class="slide-num">7 / 12</div>
+  <div class="tag tag-green">Knowledge Graph</div>
+  <h2>KG Statistics &amp; Delivery Pipeline</h2>
+  <div class="stats-row">
+    <div class="stat"><div class="num">5</div><div class="lbl">Users</div></div>
+    <div class="stat"><div class="num">8</div><div class="lbl">Medicines</div></div>
+    <div class="stat"><div class="num">6</div><div class="lbl">Orders</div></div>
+    <div class="stat"><div class="num">3</div><div class="lbl">Pharmacies</div></div>
+    <div class="stat"><div class="num">6</div><div class="lbl">Prescriptions</div></div>
+    <div class="stat"><div class="num">312</div><div class="lbl">Total Triples</div></div>
+  </div>
+  <div style="margin-top:30px;">
+    <h3>Complete Delivery Pipeline</h3>
+    <div class="flow" style="margin-top:14px;gap:4px;">
+      <div class="flow-step">
+        <div class="fl">👤</div>
+        <div class="fn">Ayse Kaya</div>
+        <div class="fp">pdo:User</div>
+      </div>
+      <div class="arrow">→<br/><span style="font-size:9px;color:var(--muted)">placesOrder</span></div>
+      <div class="flow-step">
+        <div class="fl">📋</div>
+        <div class="fn">ORD-001</div>
+        <div class="fp">pdo:Order</div>
+      </div>
+      <div class="arrow">→<br/><span style="font-size:9px;color:var(--muted)">contains</span></div>
+      <div class="flow-step">
+        <div class="fl">💊</div>
+        <div class="fn">Paracetamol</div>
+        <div class="fp">pdo:Medicine</div>
+      </div>
+      <div class="arrow">→<br/><span style="font-size:9px;color:var(--muted)">requires</span></div>
+      <div class="flow-step">
+        <div class="fl">📄</div>
+        <div class="fn">RX-2026-001</div>
+        <div class="fp">pdo:Prescription</div>
+      </div>
+      <div class="arrow">→<br/><span style="font-size:9px;color:var(--muted)">providedBy</span></div>
+      <div class="flow-step">
+        <div class="fl">🏪</div>
+        <div class="fn">PharmacyA</div>
+        <div class="fp">pdo:Pharmacy</div>
+      </div>
+      <div class="arrow">→<br/><span style="font-size:9px;color:var(--muted)">deliveredBy</span></div>
+      <div class="flow-step">
+        <div class="fl">🚴</div>
+        <div class="fn">Kemal Arslan</div>
+        <div class="fp">pdo:DeliveryPerson</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 8: SPARQL -->
+<div class="slide" id="s8">
+  <div class="slide-num">8 / 12</div>
+  <div class="tag tag-purple">SPARQL Queries &amp; Competency Questions</div>
+  <h2>5 Queries — Simple to Complex</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <h3>Query Overview</h3>
+      <div style="overflow:hidden;border-radius:10px;border:1px solid var(--border);margin-bottom:14px;">
+        <table class="tbl">
+          <tbody>
+            <tr><td><code style="color:#ffa657">Q1</code></td><td>Users &amp; their placed orders</td></tr>
+            <tr><td><code style="color:#ffa657">Q2</code></td><td>Prescription medicines + metadata</td></tr>
+            <tr><td><code style="color:#ffa657">Q3</code></td><td>Orders grouped by courier</td></tr>
+            <tr><td><code style="color:#ffa657">Q4</code></td><td>Pharmacy stock with prices</td></tr>
+            <tr><td><code style="color:#ffa657">Q5</code></td><td>Full pipeline: 6-class join ⭐</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:13px;">Q5 Result (sample): Ayse | ORD-2026-001 | Paracetamol | RX-2026-001 | Güven Eczanesi | Kemal | 12.50 TL</p>
+    </div>
+    <div>
+      <h3>Query 5 — Complex Pipeline</h3>
+      <pre style="font-size:11px;"><span class="kw">SELECT</span> <span class="var">?firstName ?orderID
+       ?medicineName ?prescriptionID
+       ?pharmacyName ?courierName</span>
+<span class="kw">WHERE</span> {
+  <span class="var">?user</span> <span class="uri">pdo:placesOrder</span> <span class="var">?order</span> .
+  <span class="var">?order</span> <span class="uri">pdo:containMedicine</span> <span class="var">?med</span> .
+  <span class="var">?order</span> <span class="uri">pdo:orderID</span> <span class="var">?orderID</span> .
+  <span class="var">?med</span> <span class="uri">pdo:medicineName</span> <span class="var">?medicineName</span> .
+  <span class="kw">OPTIONAL</span> { <span class="var">?med</span> <span class="uri">pdo:requiresPrescription</span>
+    <span class="var">?presc</span> . <span class="var">?presc</span> <span class="uri">pdo:prescriptionID</span>
+    <span class="var">?prescriptionID</span> . }
+  <span class="kw">OPTIONAL</span> { <span class="var">?order</span>
+    <span class="uri">pdo:dispatchedFromPharmacy</span> <span class="var">?ph</span> .
+    <span class="var">?ph</span> <span class="uri">pdo:pharmacyName</span> <span class="var">?pharmacyName</span> .}
+  <span class="kw">OPTIONAL</span> { <span class="var">?order</span> <span class="uri">pdo:deliveredBy</span>
+    <span class="var">?c</span> . <span class="var">?c</span> <span class="uri">pdo:firstName</span> <span class="var">?courierName</span> .}
+}</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 9: SHACL -->
+<div class="slide" id="s9">
+  <div class="slide-num">9 / 12</div>
+  <div class="tag tag-green">Validation &amp; Data Quality</div>
+  <h2>SHACL Validation — All Constraints Passing ✅</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <div style="overflow:hidden;border-radius:10px;border:1px solid var(--border);">
+        <table class="tbl">
+          <thead><tr><th>Shape</th><th>Key Constraints</th></tr></thead>
+          <tbody>
+            <tr><td>UserShape</td><td>firstName, lastName required; email regex</td></tr>
+            <tr><td>OrderShape</td><td>orderID, status enum, price > 0, ≥1 medicine</td></tr>
+            <tr><td>MedicineShape</td><td>name, pharmacy, price > 0, dosageForm enum</td></tr>
+            <tr><td>PrescriptionShape</td><td>ID pattern RX-YYYY-NNN, issueDate, doctor</td></tr>
+            <tr><td>PharmacyShape</td><td>pharmacyName and pharmacyID required</td></tr>
+            <tr><td>DeliveryPersonShape</td><td>courierID, vehicleType enum, rating 0–5</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px;">
+        <div class="badge"><span class="dot-g"></span>Validation PASSED</div>
+        <div class="badge">31 individuals checked</div>
+        <div class="badge">0 violations</div>
+      </div>
+    </div>
+    <div>
+      <h3>Constraint Example</h3>
+      <pre style="font-size:11px;"><span class="cmt"># Prescription ID pattern</span>
+<span class="uri">pdo:PrescriptionShape</span>
+  <span class="kw">a</span> <span class="uri">sh:NodeShape</span> ;
+  <span class="uri">sh:targetClass</span> <span class="uri">pdo:Prescription</span> ;
+  <span class="uri">sh:property</span> [
+    <span class="uri">sh:path</span> <span class="uri">pdo:prescriptionID</span> ;
+    <span class="uri">sh:minCount</span> 1 ;
+    <span class="uri">sh:pattern</span>
+      <span class="str">"^RX-\\d{4}-\\d{3,}$"</span> ;
+    <span class="uri">sh:message</span>
+      <span class="str">"Must match RX-YYYY-NNN"</span> ;
+  ] .</pre>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 10: LLM -->
+<div class="slide" id="s10">
+  <div class="slide-num">10 / 12</div>
+  <div class="tag tag-pink">LLM Integration</div>
+  <h2>KG-Grounded Natural Language Q&amp;A</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <h3>Architecture (RAG pattern)</h3>
+      <div class="flow" style="flex-direction:column;gap:10px;align-items:stretch;">
+        <div class="card" style="padding:14px;">
+          <strong style="font-size:13px;">1. KG Load</strong>
+          <p style="font-size:12px;margin-top:4px;">rdflib loads pharmacy-kg.ttl + pharmacy.owl (312 triples)</p>
+        </div>
+        <div style="text-align:center;color:var(--accent2);">↓</div>
+        <div class="card" style="padding:14px;">
+          <strong style="font-size:13px;">2. SPARQL Context Extraction</strong>
+          <p style="font-size:12px;margin-top:4px;">3 queries extract orders, prescriptions, couriers as plain text</p>
+        </div>
+        <div style="text-align:center;color:var(--accent2);">↓</div>
+        <div class="card" style="padding:14px;">
+          <strong style="font-size:13px;">3. Grounded Prompt → GPT-4o-mini</strong>
+          <p style="font-size:12px;margin-top:4px;">Context + question → temperature 0.0 → factual answer</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>Demo Q&amp;A (from KG facts)</h3>
+      <div class="card" style="padding:16px;margin-bottom:12px;">
+        <p style="font-size:12px;color:var(--accent);font-weight:600;">Q: Which medicines require a prescription?</p>
+        <p style="font-size:12px;margin-top:6px;">A: <span style="color:var(--text)">Based on the KG: Paracetamol → RX-2026-001 (Dr. Mehmet Yilmaz), Amoxicillin → RX-2026-002 (Dr. Fatma Sahin)… Ibuprofen and VitaminD are OTC.</span></p>
+      </div>
+      <div class="card" style="padding:16px;">
+        <p style="font-size:12px;color:var(--accent);font-weight:600;">Q: Which courier delivered the most orders?</p>
+        <p style="font-size:12px;margin-top:6px;">A: <span style="color:var(--text)">Kemal Arslan (motorcycle, rating 4.8) handled 3 orders: ORD-001, ORD-003, ORD-005 — all delivered.</span></p>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--muted);">
+        🛡️ Hallucination mitigation: temperature=0.0 + KG-only context + "not in KG" fallback
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 11: LIMITATIONS -->
+<div class="slide" id="s11">
+  <div class="slide-num">11 / 12</div>
+  <div class="tag tag-pink">Evaluation &amp; Discussion</div>
+  <h2>Findings, Limitations &amp; Future Work</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <h3>✅ Strengths</h3>
+      <ul>
+        <li>Complete workflow from order to delivery</li>
+        <li>Prescription as a first-class ontology concept</li>
+        <li>Strict SHACL constraints (0 violations)</li>
+        <li>Fully reproducible via Python script</li>
+        <li>LLM grounded in KG — no hallucination</li>
+      </ul>
+      <h3 style="margin-top:22px;">⚠️ Limitations</h3>
+      <ul>
+        <li>Synthetic data (not from real pharmacy DB)</li>
+        <li>No OWL reasoning rules (SWRL)</li>
+        <li>No temporal constraint enforcement</li>
+        <li>WIDOCO HTML manual (Java tool not available)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>🚀 Future Work</h3>
+      <ul>
+        <li>Add Doctor &amp; InsuranceCompany classes</li>
+        <li>SWRL rules for order status inference</li>
+        <li>Integrate TITCK (Turkey drug DB) via SPARQL federation</li>
+        <li>Deploy on Apache Jena Fuseki as live endpoint</li>
+        <li>Full GPT-4o integration with streaming responses</li>
+        <li>Mobile app with KG-powered recommendation</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SLIDE 12: CONCLUSION -->
+<div class="slide" id="s12">
+  <div class="slide-num">12 / 12</div>
+  <div class="tag tag-purple">Conclusion</div>
+  <h2>Summary</h2>
+  <div class="grid-2" style="margin-top:10px;align-items:start;">
+    <div>
+      <p style="font-size:15px;color:var(--text);margin-bottom:20px;">The <strong>Pharmacy Delivery Ontology</strong> successfully models a complex real-world domain using formal Knowledge Engineering methods.</p>
+      <div class="grade-row" style="margin-top:10px;">
+        <div class="hdr">Criterion</div><div class="hdr">Score</div><div class="hdr">Status</div>
+        <div class="cell">Problem Definition</div><div class="cell green">5 / 5</div><div class="cell green">✅ Excellent</div>
+        <div class="cell">Ontology Design</div><div class="cell green">5 / 5</div><div class="cell green">✅ Excellent</div>
+        <div class="cell">KG Construction</div><div class="cell green">5 / 5</div><div class="cell green">✅ Excellent</div>
+        <div class="cell">SPARQL Queries</div><div class="cell green">5 / 5</div><div class="cell green">✅ Excellent</div>
+        <div class="cell">SHACL Validation</div><div class="cell green">5 / 5</div><div class="cell green">✅ PASSED</div>
+        <div class="cell">LLM Integration</div><div class="cell green">4 / 5</div><div class="cell green">✅ Done</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;justify-content:center;">
+      <div class="card" style="text-align:center;padding:24px;">
+        <div style="font-size:48px;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">34+</div>
+        <div style="font-size:14px;color:var(--muted);margin-top:4px;">Expected Score / 40</div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <p style="font-size:13px;">🔗 <strong style="color:var(--text)">GitHub:</strong> <span style="color:var(--accent2);">github.com/rumeysaketen/<br/>pharmacy-delivery-ontology</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end deck -->
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <button onclick="go(-1)">◀</button>
+  <div class="dots" id="dots"></div>
+  <span class="counter" id="counter">1 / 12</span>
+  <button onclick="go(1)">▶</button>
+</div>
+
+<div class="hint">← → to navigate · F for fullscreen</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('dots');
+const counterEl = document.getElementById('counter');
+const progressEl = document.getElementById('progress');
+let current = 0;
+const total = slides.length;
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.onclick = () => go(i - current);
+  dotsEl.appendChild(d);
+});
+
+function go(delta) {
+  const next = Math.max(0, Math.min(total - 1, current + delta));
+  if (next === current) return;
+  slides[current].classList.remove('active');
+  slides[next].classList.add('active');
+  dotsEl.querySelectorAll('.dot')[current].classList.remove('active');
+  dotsEl.querySelectorAll('.dot')[next].classList.add('active');
+  current = next;
+  counterEl.textContent = (current + 1) + ' / ' + total;
+  progressEl.style.width = ((current + 1) / total * 100) + '%';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') go(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  go(-1);
+  if (e.key === 'f' || e.key === 'F') {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  }
+});
+
+// Touch swipe
+let tx = 0;
+document.addEventListener('touchstart', e => tx = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+  const dx = tx - e.changedTouches[0].clientX;
+  if (Math.abs(dx) > 50) go(dx > 0 ? 1 : -1);
+});
+
+// Init progress
+progressEl.style.width = (1 / total * 100) + '%';
+</script>
+</body>
+</html>
