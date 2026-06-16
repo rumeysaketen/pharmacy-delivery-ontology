@@ -114,8 +114,8 @@ Ayse (User)
 ## Links
 
 - **GitHub Repository**: https://github.com/rumeysaketen/pharmacy-delivery-ontology
-- **WIDOCO Documentation**: *(GitHub Pages URL – to be added after deployment)*
-
+- **WIDOCO Documentation**: [*(GitHub Pages URL – to be added after deployment)*
+](https://rumeysaketen.github.io/pharmacy-delivery-ontology/)
 ## References
 
 - Horridge, M., & Bechhofer, S. (2011). The OWL API: A Java API for OWL Ontologies. *Semantic Web*, 2(1), 11–21.
