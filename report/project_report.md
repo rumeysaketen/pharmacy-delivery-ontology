@@ -1,7 +1,7 @@
 # Pharmacy Delivery Ontology
 ## Knowledge Engineering and Ontologies — Course Project Report
 
-**Rumeysa Keten** | rumeysaketen@[university email]
+**Rumeysa Keten** | rumeysaketen4@gmail.com
 
 ---
 
