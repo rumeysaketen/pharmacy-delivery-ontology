@@ -1,0 +1,26 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 4: Medicines provided by each Pharmacy with stock info
+#  Amaç: Her eczanenin sağladığı ilaçları stok bilgileriyle listele
+# ============================================================
+
+SELECT ?pharmacyID ?pharmacyName ?city
+       ?medicineName ?brandName ?strength ?dosageForm ?price ?stockQuantity
+WHERE {
+    ?medicine rdf:type pdo:Medicine .
+    ?medicine pdo:providedBy ?pharmacy .
+    ?pharmacy pdo:pharmacyName ?pharmacyName .
+    ?medicine pdo:medicineName ?medicineName .
+    OPTIONAL { ?pharmacy pdo:pharmacyID ?pharmacyID . }
+    OPTIONAL { ?pharmacy pdo:city ?city . }
+    OPTIONAL { ?medicine pdo:brandName ?brandName . }
+    OPTIONAL { ?medicine pdo:strength ?strength . }
+    OPTIONAL { ?medicine pdo:dosageForm ?dosageForm . }
+    OPTIONAL { ?medicine pdo:price ?price . }
+    OPTIONAL { ?medicine pdo:stockQuantity ?stockQuantity . }
+}
+ORDER BY ?pharmacyName ?medicineName

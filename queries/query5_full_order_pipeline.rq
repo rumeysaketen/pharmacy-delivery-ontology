@@ -1,0 +1,49 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 5: Complex – Full order pipeline
+#  Amaç: Kullanıcı → Sipariş → İlaç → Reçete → Eczane → Kurye
+#         tam zincirini getir (OPTIONAL ile esnek yapı)
+# ============================================================
+
+SELECT ?userFirstName ?userLastName ?orderID ?orderDate ?orderStatus
+       ?medicineName ?brandName ?prescriptionID ?doctor
+       ?pharmacyName ?pharmacyCity
+       ?courierFirstName ?courierLastName ?vehicleType
+       ?totalPrice ?deliveryFee ?deliveryDate
+WHERE {
+    ?user rdf:type pdo:User .
+    ?user pdo:placesOrder ?order .
+    ?order pdo:orderID ?orderID .
+    ?order pdo:containMedicine ?medicine .
+    ?medicine pdo:medicineName ?medicineName .
+
+    OPTIONAL { ?user pdo:firstName ?userFirstName . }
+    OPTIONAL { ?user pdo:lastName ?userLastName . }
+    OPTIONAL { ?order pdo:orderDate ?orderDate . }
+    OPTIONAL { ?order pdo:orderStatus ?orderStatus . }
+    OPTIONAL { ?order pdo:totalPrice ?totalPrice . }
+    OPTIONAL { ?order pdo:deliveryFee ?deliveryFee . }
+    OPTIONAL { ?order pdo:deliveryDate ?deliveryDate . }
+    OPTIONAL { ?medicine pdo:brandName ?brandName . }
+    OPTIONAL {
+        ?medicine pdo:requiresPrescription ?prescription .
+        ?prescription pdo:prescriptionID ?prescriptionID .
+        OPTIONAL { ?prescription pdo:issuedByDoctor ?doctor . }
+    }
+    OPTIONAL {
+        ?order pdo:dispatchedFromPharmacy ?pharmacy .
+        OPTIONAL { ?pharmacy pdo:pharmacyName ?pharmacyName . }
+        OPTIONAL { ?pharmacy pdo:city ?pharmacyCity . }
+    }
+    OPTIONAL {
+        ?order pdo:deliveredBy ?courier .
+        OPTIONAL { ?courier pdo:firstName ?courierFirstName . }
+        OPTIONAL { ?courier pdo:lastName ?courierLastName . }
+        OPTIONAL { ?courier pdo:vehicleType ?vehicleType . }
+    }
+}
+ORDER BY ?orderDate

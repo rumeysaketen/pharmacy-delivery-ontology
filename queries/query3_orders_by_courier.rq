@@ -1,0 +1,27 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+# ============================================================
+#  QUERY 3: Orders delivered by each Courier
+#  Amaç: Her kurye tarafından teslim edilen siparişleri ve
+#         teslimat sürelerini listele
+# ============================================================
+
+SELECT ?courierID ?courierFirstName ?courierLastName ?vehicleType
+       ?orderID ?orderStatus ?totalPrice ?deliveryDate ?deliveryFee
+WHERE {
+    ?order rdf:type pdo:Order .
+    ?order pdo:deliveredBy ?courier .
+    ?order pdo:orderID ?orderID .
+    ?order pdo:orderStatus ?orderStatus .
+    ?order pdo:totalPrice ?totalPrice .
+    ?order pdo:deliveryFee ?deliveryFee .
+    OPTIONAL { ?order pdo:deliveryDate ?deliveryDate . }
+    OPTIONAL { ?courier pdo:courierID ?courierID . }
+    OPTIONAL { ?courier pdo:firstName ?courierFirstName . }
+    OPTIONAL { ?courier pdo:lastName ?courierLastName . }
+    OPTIONAL { ?courier pdo:vehicleType ?vehicleType . }
+}
+ORDER BY ?courierID ?orderID

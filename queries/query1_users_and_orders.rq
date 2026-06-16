@@ -1,0 +1,23 @@
+PREFIX pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+# ============================================================
+#  QUERY 1: List all Users and the Orders they placed
+#  Amaç: Tüm kullanıcıları ve verdikleri siparişleri listele
+# ============================================================
+
+SELECT ?userName ?userFirstName ?userLastName ?orderID ?orderStatus ?totalPrice
+WHERE {
+    ?user rdf:type pdo:User .
+    ?user pdo:placesOrder ?order .
+    ?order pdo:orderID ?orderID .
+    ?order pdo:orderStatus ?orderStatus .
+    ?order pdo:totalPrice ?totalPrice .
+    OPTIONAL { ?user pdo:firstName ?userFirstName . }
+    OPTIONAL { ?user pdo:lastName ?userLastName . }
+    BIND(REPLACE(STR(?user), ".*#", "") AS ?userName)
+}
+ORDER BY ?userName ?orderID

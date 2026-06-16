@@ -1,0 +1,321 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# ============================================================
+#  PHARMACY DELIVERY ONTOLOGY – SHACL SHAPES
+#  Validation rules for the knowledge graph instances
+# ============================================================
+
+# ------------------------------------------------------------
+#  Shape 1: UserShape – Kullanıcı doğrulama kuralları
+# ------------------------------------------------------------
+pdo:UserShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:User ;
+    sh:name "User Shape" ;
+    sh:description "Validates that every User has required properties with correct types." ;
+
+    # firstName: zorunlu, string
+    sh:property [
+        sh:path pdo:firstName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "first name" ;
+        sh:message "A User must have exactly one first name (xsd:string)." ;
+    ] ;
+
+    # lastName: zorunlu, string
+    sh:property [
+        sh:path pdo:lastName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "last name" ;
+        sh:message "A User must have exactly one last name (xsd:string)." ;
+    ] ;
+
+    # email: zorunlu, string, email pattern
+    sh:property [
+        sh:path pdo:email ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$" ;
+        sh:name "email" ;
+        sh:message "A User must have exactly one valid email address." ;
+    ] ;
+
+    # phone: opsiyonel ama varsa string
+    sh:property [
+        sh:path pdo:phone ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "phone" ;
+        sh:message "User phone must be a string." ;
+    ] ;
+
+    # placesOrder: en az 1 sipariş vermeli (opsiyonel – WARNING severity)
+    sh:property [
+        sh:path pdo:placesOrder ;
+        sh:class pdo:Order ;
+        sh:name "places order" ;
+        sh:message "placesOrder must point to an instance of pdo:Order." ;
+    ] .
+
+# ------------------------------------------------------------
+#  Shape 2: OrderShape – Sipariş doğrulama kuralları
+# ------------------------------------------------------------
+pdo:OrderShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:Order ;
+    sh:name "Order Shape" ;
+    sh:description "Validates that every Order has required and correctly typed properties." ;
+
+    # orderID: zorunlu ve benzersiz
+    sh:property [
+        sh:path pdo:orderID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "order ID" ;
+        sh:message "An Order must have exactly one orderID (xsd:string)." ;
+    ] ;
+
+    # orderStatus: zorunlu, izin verilen değerler
+    sh:property [
+        sh:path pdo:orderStatus ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "pending" "processing" "shipped" "in-transit" "delivered" "cancelled" ) ;
+        sh:name "order status" ;
+        sh:message "orderStatus must be one of: pending, processing, shipped, in-transit, delivered, cancelled." ;
+    ] ;
+
+    # totalPrice: zorunlu, pozitif decimal
+    sh:property [
+        sh:path pdo:totalPrice ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minExclusive 0 ;
+        sh:name "total price" ;
+        sh:message "An Order must have a total price greater than 0." ;
+    ] ;
+
+    # containMedicine: en az bir ilaç içermeli
+    sh:property [
+        sh:path pdo:containMedicine ;
+        sh:minCount 1 ;
+        sh:class pdo:Medicine ;
+        sh:name "contains medicine" ;
+        sh:message "An Order must contain at least one Medicine." ;
+    ] ;
+
+    # deliveredBy: en fazla bir kurye
+    sh:property [
+        sh:path pdo:deliveredBy ;
+        sh:maxCount 1 ;
+        sh:class pdo:DeliveryPerson ;
+        sh:name "delivered by" ;
+        sh:message "An Order can be delivered by at most one DeliveryPerson." ;
+    ] ;
+
+    # deliveryFee: varsa pozitif
+    sh:property [
+        sh:path pdo:deliveryFee ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:name "delivery fee" ;
+        sh:message "Delivery fee must be a non-negative decimal." ;
+    ] .
+
+# ------------------------------------------------------------
+#  Shape 3: MedicineShape – İlaç doğrulama kuralları
+# ------------------------------------------------------------
+pdo:MedicineShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:Medicine ;
+    sh:name "Medicine Shape" ;
+    sh:description "Validates that every Medicine has a name, is provided by a Pharmacy, and price is positive." ;
+
+    # medicineName: zorunlu
+    sh:property [
+        sh:path pdo:medicineName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "medicine name" ;
+        sh:message "A Medicine must have exactly one name." ;
+    ] ;
+
+    # providedBy: en az bir eczane
+    sh:property [
+        sh:path pdo:providedBy ;
+        sh:minCount 1 ;
+        sh:class pdo:Pharmacy ;
+        sh:name "provided by" ;
+        sh:message "A Medicine must be provided by at least one Pharmacy." ;
+    ] ;
+
+    # price: varsa pozitif
+    sh:property [
+        sh:path pdo:price ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minExclusive 0 ;
+        sh:name "price" ;
+        sh:message "Medicine price must be a positive decimal." ;
+    ] ;
+
+    # stockQuantity: varsa negatif olmayan integer
+    sh:property [
+        sh:path pdo:stockQuantity ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 0 ;
+        sh:name "stock quantity" ;
+        sh:message "Stock quantity must be a non-negative integer." ;
+    ] ;
+
+    # dosageForm: varsa izin verilen değerler
+    sh:property [
+        sh:path pdo:dosageForm ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "tablet" "capsule" "syrup" "solution" "injection" "cream" "patch" "inhaler" ) ;
+        sh:name "dosage form" ;
+        sh:message "dosageForm must be one of: tablet, capsule, syrup, solution, injection, cream, patch, inhaler." ;
+    ] .
+
+# ------------------------------------------------------------
+#  Shape 4: PrescriptionShape – Reçete doğrulama kuralları
+# ------------------------------------------------------------
+pdo:PrescriptionShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:Prescription ;
+    sh:name "Prescription Shape" ;
+    sh:description "Validates that every Prescription has an ID, issue date, and expiration after issue." ;
+
+    # prescriptionID: zorunlu
+    sh:property [
+        sh:path pdo:prescriptionID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:pattern "^RX-\\d{4}-\\d{3,}$" ;
+        sh:name "prescription ID" ;
+        sh:message "prescriptionID must exist and match pattern RX-YYYY-NNN." ;
+    ] ;
+
+    # issueDate: zorunlu, xsd:date
+    sh:property [
+        sh:path pdo:issueDate ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "issue date" ;
+        sh:message "A Prescription must have exactly one issue date (xsd:date)." ;
+    ] ;
+
+    # expirationDate: varsa xsd:date
+    sh:property [
+        sh:path pdo:expirationDate ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:date ;
+        sh:name "expiration date" ;
+        sh:message "Expiration date must be xsd:date." ;
+    ] ;
+
+    # issuedByDoctor: zorunlu
+    sh:property [
+        sh:path pdo:issuedByDoctor ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "issued by doctor" ;
+        sh:message "A Prescription must reference exactly one issuing doctor." ;
+    ] .
+
+# ------------------------------------------------------------
+#  Shape 5: PharmacyShape – Eczane doğrulama kuralları
+# ------------------------------------------------------------
+pdo:PharmacyShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:Pharmacy ;
+    sh:name "Pharmacy Shape" ;
+    sh:description "Validates that every Pharmacy has a name and ID." ;
+
+    # pharmacyName: zorunlu
+    sh:property [
+        sh:path pdo:pharmacyName ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "pharmacy name" ;
+        sh:message "A Pharmacy must have exactly one name." ;
+    ] ;
+
+    # pharmacyID: zorunlu
+    sh:property [
+        sh:path pdo:pharmacyID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "pharmacy ID" ;
+        sh:message "A Pharmacy must have exactly one pharmacyID." ;
+    ] ;
+
+    # city: varsa string
+    sh:property [
+        sh:path pdo:city ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "city" ;
+        sh:message "Pharmacy city must be a string." ;
+    ] .
+
+# ------------------------------------------------------------
+#  Shape 6: DeliveryPersonShape – Kurye doğrulama kuralları
+# ------------------------------------------------------------
+pdo:DeliveryPersonShape
+    a sh:NodeShape ;
+    sh:targetClass pdo:DeliveryPerson ;
+    sh:name "DeliveryPerson Shape" ;
+    sh:description "Validates that every DeliveryPerson has an ID and vehicle type." ;
+
+    # courierID: zorunlu
+    sh:property [
+        sh:path pdo:courierID ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:name "courier ID" ;
+        sh:message "A DeliveryPerson must have exactly one courierID." ;
+    ] ;
+
+    # vehicleType: varsa izin verilen değerler
+    sh:property [
+        sh:path pdo:vehicleType ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "bicycle" "motorcycle" "car" "van" "drone" ) ;
+        sh:name "vehicle type" ;
+        sh:message "vehicleType must be one of: bicycle, motorcycle, car, van, drone." ;
+    ] ;
+
+    # rating: varsa 0-5 arası
+    sh:property [
+        sh:path pdo:rating ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:decimal ;
+        sh:minInclusive 0 ;
+        sh:maxInclusive 5 ;
+        sh:name "rating" ;
+        sh:message "Courier rating must be between 0 and 5." ;
+    ] .

@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pharmacy Delivery Ontology – Documentation</title>
+<meta name="description" content="WIDOCO-style documentation for the Pharmacy Delivery Ontology (PDO). Classes, properties, individuals, and SPARQL examples."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d2e;
+    --surface2: #22263a;
+    --border: #2e3250;
+    --accent: #6c63ff;
+    --accent2: #00d4aa;
+    --accent3: #ff6b6b;
+    --text: #e8eaf6;
+    --text-muted: #8b92b8;
+    --code-bg: #141726;
+    --pill-user: #1e3a5f;
+    --pill-medicine: #1a3d2b;
+    --pill-order: #3d2b1a;
+    --pill-pharmacy: #3a1a3d;
+    --pill-prescription: #3d1a1a;
+    --pill-courier: #1a3a3d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #1a1d2e 0%, #12152a 60%, #0d1020 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 60px 40px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    background: rgba(108,99,255,.15);
+    border: 1px solid rgba(108,99,255,.4);
+    color: #9d94ff;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  header h1 {
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 700;
+    background: linear-gradient(90deg, #a29bfe, #6c63ff, #00d4aa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+  }
+  header p {
+    color: var(--text-muted);
+    max-width: 620px;
+    margin: 0 auto 24px;
+  }
+  .meta-pills { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .meta-pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 5px 14px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .meta-pill span { color: var(--text); font-weight: 500; }
+
+  /* ── LAYOUT ── */
+  .layout { display: flex; max-width: 1300px; margin: 0 auto; }
+
+  /* ── NAV ── */
+  nav {
+    width: 240px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 30px 0;
+  }
+  nav .nav-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 20px 8px;
+    margin-top: 18px;
+  }
+  nav a {
+    display: block;
+    padding: 7px 20px;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 13.5px;
+    transition: all .15s;
+    border-left: 3px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color: var(--text);
+    background: rgba(108,99,255,.08);
+    border-left-color: var(--accent);
+  }
+
+  /* ── MAIN ── */
+  main {
+    flex: 1;
+    padding: 40px 50px;
+    min-width: 0;
+    max-width: 960px;
+  }
+
+  /* ── SECTIONS ── */
+  section { margin-bottom: 60px; scroll-margin-top: 20px; }
+  h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .icon { font-size: 20px; }
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #a29bfe;
+    margin: 24px 0 10px;
+  }
+  p { color: var(--text-muted); margin-bottom: 12px; }
+
+  /* ── CARDS ── */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color .2s, transform .2s;
+  }
+  .card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .card-icon { font-size: 26px; margin-bottom: 10px; }
+  .card h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .card p { font-size: 13px; color: var(--text-muted); margin: 0; }
+  .card .pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th {
+    background: var(--surface2);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid rgba(46,50,80,.5); color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(108,99,255,.04); }
+  code.uri {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #00d4aa;
+    background: rgba(0,212,170,.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  code.prop {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #ff9f7f;
+    background: rgba(255,107,107,.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .tag-obj  { background: rgba(108,99,255,.15); color: #a29bfe; }
+  .tag-data { background: rgba(0,212,170,.12);  color: #00d4aa; }
+  .tag-func { background: rgba(255,107,107,.12); color: #ff8585; }
+
+  /* ── CODE BLOCKS ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #c9d1d9;
+    margin: 16px 0;
+  }
+  .keyword  { color: #ff7b72; }
+  .string   { color: #a5d6ff; }
+  .comment  { color: #8b949e; font-style: italic; }
+  .prefix   { color: #d2a8ff; }
+  .uri-h    { color: #79c0ff; }
+  .var-h    { color: #ffa657; }
+
+  /* ── SHACL SHAPES ── */
+  .shape-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .shape-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #a29bfe;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .shape-rule {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(46,50,80,.4);
+    font-size: 13px;
+  }
+  .shape-rule:last-child { border-bottom: none; }
+  .rule-prop { color: #ff9f7f; font-family: 'JetBrains Mono', monospace; min-width: 180px; }
+  .rule-desc { color: var(--text-muted); }
+
+  /* ── PIPELINE ── */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 20px 0;
+  }
+  .pipeline-step {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+  }
+  .pipeline-step .label { color: var(--text-muted); font-size: 11px; margin-bottom: 3px; }
+  .pipeline-step .name  { color: var(--text); }
+  .pipeline-arrow { color: var(--accent2); font-size: 20px; padding: 0 8px; }
+
+  /* ── NAMESPACE BOX ── */
+  .ns-box {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #d2a8ff;
+  }
+  .ns-box span { color: #79c0ff; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Knowledge Engineering &amp; Ontologies – Term Project</div>
+  <h1>Pharmacy Delivery Ontology</h1>
+  <p>A formal OWL ontology for modeling online pharmacy delivery systems: users, medicines, orders, prescriptions, pharmacies, and couriers.</p>
+  <div class="meta-pills">
+    <div class="meta-pill">Version <span>1.0.0</span></div>
+    <div class="meta-pill">Date <span>June 2026</span></div>
+    <div class="meta-pill">Classes <span>6</span></div>
+    <div class="meta-pill">Object Properties <span>5</span></div>
+    <div class="meta-pill">Data Properties <span>20+</span></div>
+    <div class="meta-pill">SPARQL Queries <span>5</span></div>
+    <div class="meta-pill">SHACL Shapes <span>6</span></div>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-title">Navigation</div>
+  <a href="#overview" class="active">Overview</a>
+  <a href="#namespace">Namespace</a>
+
+  <div class="nav-title">Ontology</div>
+  <a href="#classes">Classes</a>
+  <a href="#object-properties">Object Properties</a>
+  <a href="#data-properties">Data Properties</a>
+  <a href="#individuals">Named Individuals</a>
+
+  <div class="nav-title">Knowledge Graph</div>
+  <a href="#sparql">SPARQL Queries</a>
+  <a href="#shacl">SHACL Validation</a>
+  <a href="#pipeline">Delivery Pipeline</a>
+
+  <div class="nav-title">Project</div>
+  <a href="#references">References</a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <h2><span class="icon">🏥</span> Overview</h2>
+  <p>
+    The <strong>Pharmacy Delivery Ontology (PDO)</strong> formally represents the domain of online pharmacy delivery. It captures the entities, relationships, and constraints of a system where customers order medications—including prescription drugs—and receive them at home via courier.
+  </p>
+  <p>
+    The ontology was designed using <strong>Protégé 5.6</strong>, serialized in <strong>OWL/XML</strong>, and the accompanying knowledge graph is encoded in <strong>RDF/Turtle</strong>. Data quality is enforced using <strong>SHACL shapes</strong>, and the graph is queryable via <strong>SPARQL 1.1</strong>.
+  </p>
+</section>
+
+<!-- NAMESPACE -->
+<section id="namespace">
+  <h2><span class="icon">🔗</span> Namespace</h2>
+  <div class="ns-box">
+    <div><span>@prefix pdo:</span> &lt;http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#&gt; .</div>
+    <div><span>@prefix rdf:</span> &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .</div>
+    <div><span>@prefix rdfs:</span> &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .</div>
+    <div><span>@prefix owl:</span> &lt;http://www.w3.org/2002/07/owl#&gt; .</div>
+    <div><span>@prefix xsd:</span> &lt;http://www.w3.org/2001/XMLSchema#&gt; .</div>
+    <div><span>@prefix sh:</span> &lt;http://www.w3.org/ns/shacl#&gt; .</div>
+  </div>
+</section>
+
+<!-- CLASSES -->
+<section id="classes">
+  <h2><span class="icon">📦</span> Classes</h2>
+  <p>The ontology defines <strong>6 core classes</strong>. All are subclasses of <code class="uri">owl:Thing</code>.</p>
+  <div class="card-grid">
+
+    <div class="card">
+      <div class="card-icon">👤</div>
+      <h4>User</h4>
+      <p>A customer who places medication orders through the delivery platform.</p>
+      <div class="pill" style="background:var(--pill-user);color:#7bb8f5;">pdo:User</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">💊</div>
+      <h4>Medicine</h4>
+      <p>A pharmaceutical product dispensed to customers. May be prescription-only or OTC.</p>
+      <div class="pill" style="background:var(--pill-medicine);color:#6fcf97;">pdo:Medicine</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <h4>Order</h4>
+      <p>A purchase request placed by a user, containing one or more medicines.</p>
+      <div class="pill" style="background:var(--pill-order);color:#f2994a;">pdo:Order</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🏪</div>
+      <h4>Pharmacy</h4>
+      <p>A licensed establishment that stocks and dispatches medicines for delivery.</p>
+      <div class="pill" style="background:var(--pill-pharmacy);color:#bb6bd9;">pdo:Pharmacy</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <h4>Prescription</h4>
+      <p>A doctor-issued authorization that allows dispensing of prescription medicines.</p>
+      <div class="pill" style="background:var(--pill-prescription);color:#eb5757;">pdo:Prescription</div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🚴</div>
+      <h4>DeliveryPerson</h4>
+      <p>A courier responsible for picking up and delivering orders to customers.</p>
+      <div class="pill" style="background:var(--pill-courier);color:#56ccf2;">pdo:DeliveryPerson</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- OBJECT PROPERTIES -->
+<section id="object-properties">
+  <h2><span class="icon">🔀</span> Object Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Domain</th>
+          <th>Range</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code class="prop">placesOrder</code></td>
+          <td><code class="uri">pdo:User</code></td>
+          <td><code class="uri">pdo:Order</code></td>
+          <td>A user places one or more orders.</td>
+        </tr>
+        <tr>
+          <td><code class="prop">containMedicine</code></td>
+          <td><code class="uri">pdo:Order</code></td>
+          <td><code class="uri">pdo:Medicine</code></td>
+          <td>An order contains one or more medicines.</td>
+        </tr>
+        <tr>
+          <td><code class="prop">deliveredBy</code></td>
+          <td><code class="uri">pdo:Order</code></td>
+          <td><code class="uri">pdo:DeliveryPerson</code></td>
+          <td>An order is assigned to a delivery person.</td>
+        </tr>
+        <tr>
+          <td><code class="prop">providedBy</code></td>
+          <td><code class="uri">pdo:Medicine</code></td>
+          <td><code class="uri">pdo:Pharmacy</code></td>
+          <td>A medicine is stocked and provided by a pharmacy.</td>
+        </tr>
+        <tr>
+          <td><code class="prop">requiresPrescription</code></td>
+          <td><code class="uri">pdo:Medicine</code></td>
+          <td><code class="uri">pdo:Prescription</code></td>
+          <td>A medicine that requires a valid prescription.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DATA PROPERTIES -->
+<section id="data-properties">
+  <h2><span class="icon">🏷️</span> Data Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Property</th><th>Domain</th><th>Range</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code class="prop">firstName</code></td><td><code class="uri">pdo:User</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">lastName</code></td><td><code class="uri">pdo:User</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">email</code></td><td><code class="uri">pdo:User</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">dateOfBirth</code></td><td><code class="uri">pdo:User</code></td><td>xsd:date</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">medicineName</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">brandName</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">dosageForm</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">strength</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">price</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:decimal</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">stockQuantity</code></td><td><code class="uri">pdo:Medicine</code></td><td>xsd:integer</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">orderID</code></td><td><code class="uri">pdo:Order</code></td><td>xsd:string</td><td><span class="tag tag-func">Functional</span></td></tr>
+        <tr><td><code class="prop">orderStatus</code></td><td><code class="uri">pdo:Order</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">orderDate</code></td><td><code class="uri">pdo:Order</code></td><td>xsd:dateTime</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">totalPrice</code></td><td><code class="uri">pdo:Order</code></td><td>xsd:decimal</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">prescriptionID</code></td><td><code class="uri">pdo:Prescription</code></td><td>xsd:string</td><td><span class="tag tag-func">Functional</span></td></tr>
+        <tr><td><code class="prop">issueDate</code></td><td><code class="uri">pdo:Prescription</code></td><td>xsd:date</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">pharmacyName</code></td><td><code class="uri">pdo:Pharmacy</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">courierID</code></td><td><code class="uri">pdo:DeliveryPerson</code></td><td>xsd:string</td><td><span class="tag tag-func">Functional</span></td></tr>
+        <tr><td><code class="prop">vehicleType</code></td><td><code class="uri">pdo:DeliveryPerson</code></td><td>xsd:string</td><td><span class="tag tag-data">DataProp</span></td></tr>
+        <tr><td><code class="prop">rating</code></td><td><code class="uri">pdo:DeliveryPerson</code></td><td>xsd:decimal</td><td><span class="tag tag-data">DataProp</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- INDIVIDUALS -->
+<section id="individuals">
+  <h2><span class="icon">👥</span> Named Individuals</h2>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Individual</th><th>Type</th><th>Key Facts</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code class="uri">pdo:Ayse</code></td><td>User</td><td>firstName "Ayse", places Order001 &amp; Order005</td></tr>
+        <tr><td><code class="uri">pdo:Mehmet</code></td><td>User</td><td>firstName "Mehmet", places Order002</td></tr>
+        <tr><td><code class="uri">pdo:Zeynep</code></td><td>User</td><td>firstName "Zeynep", places Order003</td></tr>
+        <tr><td><code class="uri">pdo:Ahmet</code></td><td>User</td><td>firstName "Ahmet", places Order004</td></tr>
+        <tr><td><code class="uri">pdo:Fatma</code></td><td>User</td><td>firstName "Fatma", places Order006</td></tr>
+        <tr><td><code class="uri">pdo:Paracetamol</code></td><td>Medicine</td><td>Parol 500mg, tablet, 12.50 TL, requires Prescription123</td></tr>
+        <tr><td><code class="uri">pdo:Amoxicillin</code></td><td>Medicine</td><td>Amoksiklav 875mg, tablet, 45.00 TL</td></tr>
+        <tr><td><code class="uri">pdo:Metformin</code></td><td>Medicine</td><td>Glifor 1000mg, type 2 diabetes</td></tr>
+        <tr><td><code class="uri">pdo:Ibuprofen</code></td><td>Medicine</td><td>Brufen 400mg, OTC</td></tr>
+        <tr><td><code class="uri">pdo:Atorvastatin</code></td><td>Medicine</td><td>Lipitor 20mg, high cholesterol</td></tr>
+        <tr><td><code class="uri">pdo:Omeprazole</code></td><td>Medicine</td><td>Losec 20mg, acid reflux</td></tr>
+        <tr><td><code class="uri">pdo:Lisinopril</code></td><td>Medicine</td><td>Zestril 10mg, hypertension</td></tr>
+        <tr><td><code class="uri">pdo:VitaminD</code></td><td>Medicine</td><td>D-Cure 25000 IU, OTC</td></tr>
+        <tr><td><code class="uri">pdo:PharmacyA</code></td><td>Pharmacy</td><td>Güven Eczanesi, Istanbul</td></tr>
+        <tr><td><code class="uri">pdo:PharmacyB</code></td><td>Pharmacy</td><td>Sağlık Eczanesi, Ankara</td></tr>
+        <tr><td><code class="uri">pdo:PharmacyC</code></td><td>Pharmacy</td><td>Yıldız Eczanesi, Izmir</td></tr>
+        <tr><td><code class="uri">pdo:Courier1</code></td><td>DeliveryPerson</td><td>Kemal Arslan, motorcycle, rating 4.8</td></tr>
+        <tr><td><code class="uri">pdo:Courier2</code></td><td>DeliveryPerson</td><td>Hasan Ozturk, bicycle, rating 4.5</td></tr>
+        <tr><td><code class="uri">pdo:Courier3</code></td><td>DeliveryPerson</td><td>Burak Koc, motorcycle, rating 4.9</td></tr>
+        <tr><td><code class="uri">pdo:Order001</code></td><td>Order</td><td>ORD-2026-001, delivered, Paracetamol</td></tr>
+        <tr><td><code class="uri">pdo:Prescription123</code></td><td>Prescription</td><td>RX-2026-001, Dr. Mehmet Yilmaz</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SPARQL -->
+<section id="sparql">
+  <h2><span class="icon">🔍</span> SPARQL Queries</h2>
+
+  <h3>Query 1 – Users and their Orders</h3>
+  <p>Lists all users with the orders they have placed, including status and total price.</p>
+  <pre><span class="keyword">SELECT</span> <span class="var-h">?userName ?orderID ?orderStatus ?totalPrice</span>
+<span class="keyword">WHERE</span> {
+    <span class="var-h">?user</span>  <span class="uri-h">rdf:type</span>        <span class="uri-h">pdo:User</span> .
+    <span class="var-h">?user</span>  <span class="uri-h">pdo:placesOrder</span> <span class="var-h">?order</span> .
+    <span class="var-h">?order</span> <span class="uri-h">pdo:orderID</span>     <span class="var-h">?orderID</span> .
+    <span class="var-h">?order</span> <span class="uri-h">pdo:orderStatus</span> <span class="var-h">?orderStatus</span> .
+    <span class="var-h">?order</span> <span class="uri-h">pdo:totalPrice</span>  <span class="var-h">?totalPrice</span> .
+    BIND(REPLACE(STR(<span class="var-h">?user</span>), <span class="string">".*#"</span>, <span class="string">""</span>) AS <span class="var-h">?userName</span>)
+}
+<span class="keyword">ORDER BY</span> <span class="var-h">?userName</span></pre>
+
+  <h3>Query 2 – Prescription Medicines</h3>
+  <p>Retrieves all medicines linked to a prescription, with prescription metadata.</p>
+  <pre><span class="keyword">SELECT</span> <span class="var-h">?medicineName ?brandName ?prescriptionID ?issueDate ?doctor</span>
+<span class="keyword">WHERE</span> {
+    <span class="var-h">?medicine</span>     <span class="uri-h">rdf:type</span>                  <span class="uri-h">pdo:Medicine</span> .
+    <span class="var-h">?medicine</span>     <span class="uri-h">pdo:requiresPrescription</span>  <span class="var-h">?prescription</span> .
+    <span class="var-h">?medicine</span>     <span class="uri-h">pdo:medicineName</span>          <span class="var-h">?medicineName</span> .
+    <span class="var-h">?prescription</span> <span class="uri-h">pdo:prescriptionID</span>        <span class="var-h">?prescriptionID</span> .
+    OPTIONAL { <span class="var-h">?medicine</span>     <span class="uri-h">pdo:brandName</span>      <span class="var-h">?brandName</span>  . }
+    OPTIONAL { <span class="var-h">?prescription</span> <span class="uri-h">pdo:issueDate</span>      <span class="var-h">?issueDate</span>  . }
+    OPTIONAL { <span class="var-h">?prescription</span> <span class="uri-h">pdo:issuedByDoctor</span> <span class="var-h">?doctor</span>    . }
+}</pre>
+
+  <h3>Query 3 – Orders by Courier</h3>
+  <p>Groups all delivered orders by courier, showing vehicle type and delivery fees.</p>
+  <pre><span class="keyword">SELECT</span> <span class="var-h">?courierID ?vehicleType ?orderID ?orderStatus ?deliveryFee</span>
+<span class="keyword">WHERE</span> {
+    <span class="var-h">?order</span>   <span class="uri-h">rdf:type</span>         <span class="uri-h">pdo:Order</span> .
+    <span class="var-h">?order</span>   <span class="uri-h">pdo:deliveredBy</span>  <span class="var-h">?courier</span> .
+    <span class="var-h">?order</span>   <span class="uri-h">pdo:orderID</span>      <span class="var-h">?orderID</span> .
+    <span class="var-h">?order</span>   <span class="uri-h">pdo:orderStatus</span>  <span class="var-h">?orderStatus</span> .
+    <span class="var-h">?order</span>   <span class="uri-h">pdo:deliveryFee</span>  <span class="var-h">?deliveryFee</span> .
+    OPTIONAL { <span class="var-h">?courier</span> <span class="uri-h">pdo:courierID</span>   <span class="var-h">?courierID</span>  . }
+    OPTIONAL { <span class="var-h">?courier</span> <span class="uri-h">pdo:vehicleType</span> <span class="var-h">?vehicleType</span> . }
+}
+<span class="keyword">ORDER BY</span> <span class="var-h">?courierID</span></pre>
+
+  <h3>Query 4 – Pharmacy Medicine Stock</h3>
+  <p>Lists all medicines stocked by each pharmacy with price and stock quantity.</p>
+  <pre><span class="keyword">SELECT</span> <span class="var-h">?pharmacyName ?city ?medicineName ?price ?stockQuantity</span>
+<span class="keyword">WHERE</span> {
+    <span class="var-h">?medicine</span> <span class="uri-h">rdf:type</span>       <span class="uri-h">pdo:Medicine</span> .
+    <span class="var-h">?medicine</span> <span class="uri-h">pdo:providedBy</span> <span class="var-h">?pharmacy</span> .
+    <span class="var-h">?medicine</span> <span class="uri-h">pdo:medicineName</span> <span class="var-h">?medicineName</span> .
+    <span class="var-h">?pharmacy</span> <span class="uri-h">pdo:pharmacyName</span> <span class="var-h">?pharmacyName</span> .
+    OPTIONAL { <span class="var-h">?pharmacy</span> <span class="uri-h">pdo:city</span>          <span class="var-h">?city</span>         . }
+    OPTIONAL { <span class="var-h">?medicine</span> <span class="uri-h">pdo:price</span>         <span class="var-h">?price</span>        . }
+    OPTIONAL { <span class="var-h">?medicine</span> <span class="uri-h">pdo:stockQuantity</span> <span class="var-h">?stockQuantity</span> . }
+}
+<span class="keyword">ORDER BY</span> <span class="var-h">?pharmacyName ?medicineName</span></pre>
+
+  <h3>Query 5 – Full Order Pipeline (Complex)</h3>
+  <p>Traverses the complete chain: User → Order → Medicine → Prescription → Pharmacy → Courier.</p>
+  <pre><span class="keyword">SELECT</span> <span class="var-h">?userFirstName ?orderID ?medicineName ?prescriptionID
+       ?pharmacyName ?courierFirstName ?vehicleType ?totalPrice</span>
+<span class="keyword">WHERE</span> {
+    <span class="var-h">?user</span>     <span class="uri-h">pdo:placesOrder</span>     <span class="var-h">?order</span> .
+    <span class="var-h">?order</span>    <span class="uri-h">pdo:containMedicine</span> <span class="var-h">?medicine</span> .
+    <span class="var-h">?medicine</span> <span class="uri-h">pdo:medicineName</span>    <span class="var-h">?medicineName</span> .
+    <span class="var-h">?order</span>    <span class="uri-h">pdo:orderID</span>         <span class="var-h">?orderID</span> .
+    OPTIONAL { <span class="var-h">?user</span> <span class="uri-h">pdo:firstName</span> <span class="var-h">?userFirstName</span> . }
+    OPTIONAL { <span class="var-h">?order</span> <span class="uri-h">pdo:totalPrice</span> <span class="var-h">?totalPrice</span> . }
+    OPTIONAL {
+        <span class="var-h">?medicine</span> <span class="uri-h">pdo:requiresPrescription</span> <span class="var-h">?presc</span> .
+        <span class="var-h">?presc</span> <span class="uri-h">pdo:prescriptionID</span> <span class="var-h">?prescriptionID</span> .
+    }
+    OPTIONAL {
+        <span class="var-h">?order</span> <span class="uri-h">pdo:dispatchedFromPharmacy</span> <span class="var-h">?ph</span> .
+        <span class="var-h">?ph</span> <span class="uri-h">pdo:pharmacyName</span> <span class="var-h">?pharmacyName</span> .
+    }
+    OPTIONAL {
+        <span class="var-h">?order</span> <span class="uri-h">pdo:deliveredBy</span> <span class="var-h">?c</span> .
+        <span class="var-h">?c</span> <span class="uri-h">pdo:firstName</span>  <span class="var-h">?courierFirstName</span> .
+        <span class="var-h">?c</span> <span class="uri-h">pdo:vehicleType</span> <span class="var-h">?vehicleType</span> .
+    }
+}
+<span class="keyword">ORDER BY</span> <span class="var-h">?orderID</span></pre>
+</section>
+
+<!-- SHACL -->
+<section id="shacl">
+  <h2><span class="icon">✅</span> SHACL Validation</h2>
+  <p>Six <strong>NodeShapes</strong> enforce data quality constraints across all classes.</p>
+
+  <div class="shape-card">
+    <h4>👤 pdo:UserShape → targets pdo:User</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:firstName</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:lastName</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:email</span><span class="rule-desc">minCount 1, valid email pattern regex</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:placesOrder</span><span class="rule-desc">range must be pdo:Order</span></div>
+  </div>
+
+  <div class="shape-card">
+    <h4>📋 pdo:OrderShape → targets pdo:Order</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:orderID</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:orderStatus</span><span class="rule-desc">enum: pending | processing | shipped | in-transit | delivered | cancelled</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:totalPrice</span><span class="rule-desc">xsd:decimal, minExclusive 0</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:containMedicine</span><span class="rule-desc">minCount 1, range pdo:Medicine</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:deliveryFee</span><span class="rule-desc">xsd:decimal, minInclusive 0</span></div>
+  </div>
+
+  <div class="shape-card">
+    <h4>💊 pdo:MedicineShape → targets pdo:Medicine</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:medicineName</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:providedBy</span><span class="rule-desc">minCount 1, range pdo:Pharmacy</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:price</span><span class="rule-desc">xsd:decimal, minExclusive 0</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:stockQuantity</span><span class="rule-desc">xsd:integer, minInclusive 0</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:dosageForm</span><span class="rule-desc">enum: tablet | capsule | syrup | solution | injection | cream | patch | inhaler</span></div>
+  </div>
+
+  <div class="shape-card">
+    <h4>📄 pdo:PrescriptionShape → targets pdo:Prescription</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:prescriptionID</span><span class="rule-desc">minCount 1, pattern: RX-YYYY-NNN</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:issueDate</span><span class="rule-desc">minCount 1, xsd:date</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:issuedByDoctor</span><span class="rule-desc">minCount 1, xsd:string</span></div>
+  </div>
+
+  <div class="shape-card">
+    <h4>🏪 pdo:PharmacyShape → targets pdo:Pharmacy</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:pharmacyName</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:pharmacyID</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+  </div>
+
+  <div class="shape-card">
+    <h4>🚴 pdo:DeliveryPersonShape → targets pdo:DeliveryPerson</h4>
+    <div class="shape-rule"><span class="rule-prop">pdo:courierID</span><span class="rule-desc">minCount 1, maxCount 1, xsd:string</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:vehicleType</span><span class="rule-desc">enum: bicycle | motorcycle | car | van | drone</span></div>
+    <div class="shape-rule"><span class="rule-prop">pdo:rating</span><span class="rule-desc">xsd:decimal, minInclusive 0, maxInclusive 5</span></div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <h2><span class="icon">🔄</span> Delivery Pipeline</h2>
+  <p>The typical flow of a pharmacy delivery order through the knowledge graph:</p>
+  <div class="pipeline">
+    <div class="pipeline-step">
+      <div class="label">User</div>
+      <div class="name">👤 Ayse</div>
+    </div>
+    <div class="pipeline-arrow">→<br/><small style="font-size:10px;color:#8b92b8">placesOrder</small></div>
+    <div class="pipeline-step">
+      <div class="label">Order</div>
+      <div class="name">📋 Order001</div>
+    </div>
+    <div class="pipeline-arrow">→<br/><small style="font-size:10px;color:#8b92b8">containMedicine</small></div>
+    <div class="pipeline-step">
+      <div class="label">Medicine</div>
+      <div class="name">💊 Paracetamol</div>
+    </div>
+    <div class="pipeline-arrow">→<br/><small style="font-size:10px;color:#8b92b8">requiresPrescription</small></div>
+    <div class="pipeline-step">
+      <div class="label">Prescription</div>
+      <div class="name">📄 RX-2026-001</div>
+    </div>
+    <div class="pipeline-arrow">→<br/><small style="font-size:10px;color:#8b92b8">providedBy</small></div>
+    <div class="pipeline-step">
+      <div class="label">Pharmacy</div>
+      <div class="name">🏪 PharmacyA</div>
+    </div>
+    <div class="pipeline-arrow">→<br/><small style="font-size:10px;color:#8b92b8">deliveredBy</small></div>
+    <div class="pipeline-step">
+      <div class="label">Courier</div>
+      <div class="name">🚴 Courier1</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references">
+  <h2><span class="icon">📚</span> References</h2>
+  <p>Horridge, M., &amp; Bechhofer, S. (2011). The OWL API: A Java API for OWL Ontologies. <em>Semantic Web</em>, 2(1), 11–21.</p>
+  <p>Knublauch, H., &amp; Kontokostas, D. (2017). <em>Shapes Constraint Language (SHACL)</em>. W3C Recommendation. https://www.w3.org/TR/shacl/</p>
+  <p>Harris, S., &amp; Seaborne, A. (2013). <em>SPARQL 1.1 Query Language</em>. W3C Recommendation. https://www.w3.org/TR/sparql11-query/</p>
+  <p>Lohmann, S., et al. (2015). WIDOCO: A Wizard for Documenting Ontologies. <em>14th International Semantic Web Conference (ISWC 2015)</em>.</p>
+  <p>Noy, N. F., &amp; McGuinness, D. L. (2001). <em>Ontology Development 101: A Guide to Creating Your First Ontology</em>. Stanford Knowledge Systems Laboratory.</p>
+</section>
+
+</main>
+</div>
+
+<footer>
+  Pharmacy Delivery Ontology v1.0.0 &nbsp;·&nbsp; Knowledge Engineering &amp; Ontologies Course &nbsp;·&nbsp; June 2026
+  &nbsp;·&nbsp; <a href="https://github.com/rumeysaketen/pharmacy-delivery-ontology" style="color:var(--accent2);text-decoration:none;">GitHub ↗</a>
+</footer>
+
+</body>
+</html>
