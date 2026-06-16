@@ -85,13 +85,12 @@ pdo:OrderShape
         sh:message "An Order must have exactly one orderID (xsd:string)." ;
     ] ;
 
-    # orderStatus: zorunlu, izin verilen değerler
+    # orderStatus: zorunlu, izin verilen değerler (sh:in implies string type)
     sh:property [
         sh:path pdo:orderStatus ;
         sh:minCount 1 ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:in ( "pending" "processing" "shipped" "in-transit" "delivered" "cancelled" ) ;
+        sh:in ( "pending"^^xsd:string "processing"^^xsd:string "shipped"^^xsd:string "in-transit"^^xsd:string "delivered"^^xsd:string "cancelled"^^xsd:string ) ;
         sh:name "order status" ;
         sh:message "orderStatus must be one of: pending, processing, shipped, in-transit, delivered, cancelled." ;
     ] ;
@@ -187,8 +186,7 @@ pdo:MedicineShape
     sh:property [
         sh:path pdo:dosageForm ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:in ( "tablet" "capsule" "syrup" "solution" "injection" "cream" "patch" "inhaler" ) ;
+        sh:in ( "tablet"^^xsd:string "capsule"^^xsd:string "syrup"^^xsd:string "solution"^^xsd:string "injection"^^xsd:string "cream"^^xsd:string "patch"^^xsd:string "inhaler"^^xsd:string ) ;
         sh:name "dosage form" ;
         sh:message "dosageForm must be one of: tablet, capsule, syrup, solution, injection, cream, patch, inhaler." ;
     ] .
@@ -303,8 +301,7 @@ pdo:DeliveryPersonShape
     sh:property [
         sh:path pdo:vehicleType ;
         sh:maxCount 1 ;
-        sh:datatype xsd:string ;
-        sh:in ( "bicycle" "motorcycle" "car" "van" "drone" ) ;
+        sh:in ( "bicycle"^^xsd:string "motorcycle"^^xsd:string "car"^^xsd:string "van"^^xsd:string "drone"^^xsd:string ) ;
         sh:name "vehicle type" ;
         sh:message "vehicleType must be one of: bicycle, motorcycle, car, van, drone." ;
     ] ;

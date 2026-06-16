@@ -1,0 +1,375 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3> a owl:Ontology .
+
+pdo:Ali a pdo:User ;
+    pdo:email "ali@email.com"^^xsd:string ;
+    pdo:firstName "Ali"^^xsd:string ;
+    pdo:lastName "Ozdemir"^^xsd:string ;
+    pdo:phone "+90 530 999 8877"^^xsd:string ;
+    pdo:placesOrder pdo:Order007 .
+
+pdo:containMedicine a owl:ObjectProperty ;
+    rdfs:domain pdo:Order ;
+    rdfs:range pdo:Medicine ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+pdo:deliveredBy a owl:ObjectProperty ;
+    rdfs:domain pdo:Order ;
+    rdfs:range pdo:DeliveryPerson ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+pdo:placesOrder a owl:ObjectProperty ;
+    rdfs:domain pdo:User ;
+    rdfs:range pdo:Order ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+pdo:providedBy a owl:ObjectProperty ;
+    rdfs:domain pdo:Medicine ;
+    rdfs:range pdo:Pharmacy ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+pdo:requiresPrescription a owl:ObjectProperty ;
+    rdfs:domain pdo:Medicine ;
+    rdfs:range pdo:Prescription ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+pdo:Ahmet a pdo:User ;
+    pdo:city "Izmir" ;
+    pdo:dateOfBirth "1965-03-18"^^xsd:date ;
+    pdo:email "ahmet.celik@email.com" ;
+    pdo:firstName "Ahmet" ;
+    pdo:lastName "Celik" ;
+    pdo:phone "+90 545 444 5566" ;
+    pdo:placesOrder pdo:Order004 .
+
+pdo:Amoxicillin a pdo:Medicine ;
+    pdo:activeIngredient "amoxicillin + clavulanic acid" ;
+    pdo:brandName "Amoksiklav 875mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "bacterial infections" ;
+    pdo:medicineName "Amoxicillin" ;
+    pdo:price 45.00 ;
+    pdo:providedBy pdo:PharmacyA ;
+    pdo:requiresPrescription pdo:Prescription456 ;
+    pdo:stockQuantity 200 ;
+    pdo:strength "875mg" .
+
+pdo:Atorvastatin a pdo:Medicine ;
+    pdo:activeIngredient "atorvastatin calcium" ;
+    pdo:brandName "Lipitor 20mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "high cholesterol" ;
+    pdo:medicineName "Atorvastatin" ;
+    pdo:price 67.00 ;
+    pdo:providedBy pdo:PharmacyC ;
+    pdo:requiresPrescription pdo:Prescription321 ;
+    pdo:stockQuantity 150 ;
+    pdo:strength "20mg" .
+
+pdo:Fatma a pdo:User ;
+    pdo:city "Ankara" ;
+    pdo:dateOfBirth "1992-07-30"^^xsd:date ;
+    pdo:email "fatma.sahin@email.com" ;
+    pdo:firstName "Fatma" ;
+    pdo:lastName "Sahin" ;
+    pdo:phone "+90 538 555 6677" ;
+    pdo:placesOrder pdo:Order006 .
+
+pdo:Ibuprofen a pdo:Medicine ;
+    pdo:activeIngredient "ibuprofen" ;
+    pdo:brandName "Brufen 400mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "pain, inflammation, fever" ;
+    pdo:medicineName "Ibuprofen" ;
+    pdo:price 18.75 ;
+    pdo:providedBy pdo:PharmacyB ;
+    pdo:stockQuantity 600 ;
+    pdo:strength "400mg" .
+
+pdo:Lisinopril a pdo:Medicine ;
+    pdo:activeIngredient "lisinopril" ;
+    pdo:brandName "Zestril 10mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "hypertension, heart failure" ;
+    pdo:medicineName "Lisinopril" ;
+    pdo:price 41.50 ;
+    pdo:providedBy pdo:PharmacyA ;
+    pdo:requiresPrescription pdo:Prescription987 ;
+    pdo:stockQuantity 280 ;
+    pdo:strength "10mg" .
+
+pdo:Mehmet a pdo:User ;
+    pdo:city "Ankara" ;
+    pdo:dateOfBirth "1985-08-22"^^xsd:date ;
+    pdo:email "mehmet.yilmaz@email.com" ;
+    pdo:firstName "Mehmet" ;
+    pdo:lastName "Yilmaz" ;
+    pdo:phone "+90 542 222 3344" ;
+    pdo:placesOrder pdo:Order002 .
+
+pdo:Metformin a pdo:Medicine ;
+    pdo:activeIngredient "metformin hydrochloride" ;
+    pdo:brandName "Glifor 1000mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "type 2 diabetes" ;
+    pdo:medicineName "Metformin" ;
+    pdo:price 28.00 ;
+    pdo:providedBy pdo:PharmacyB ;
+    pdo:requiresPrescription pdo:Prescription789 ;
+    pdo:stockQuantity 350 ;
+    pdo:strength "1000mg" .
+
+pdo:Omeprazole a pdo:Medicine ;
+    pdo:activeIngredient "omeprazole" ;
+    pdo:brandName "Losec 20mg" ;
+    pdo:dosageForm "capsule"^^xsd:string ;
+    pdo:indicatedFor "acid reflux, peptic ulcer" ;
+    pdo:medicineName "Omeprazole" ;
+    pdo:price 32.00 ;
+    pdo:providedBy pdo:PharmacyC ;
+    pdo:requiresPrescription pdo:Prescription654 ;
+    pdo:stockQuantity 400 ;
+    pdo:strength "20mg" .
+
+pdo:Order001 a pdo:Order,
+        owl:NamedIndividual ;
+    pdo:containMedicine pdo:Paracetamol ;
+    pdo:deliveredBy pdo:Courier1 ;
+    pdo:deliveryAddress "Besiktas, Istanbul" ;
+    pdo:deliveryDate "2026-06-10T11:45:00"^^xsd:dateTime ;
+    pdo:deliveryFee 5.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyA ;
+    pdo:orderDate "2026-06-10T09:30:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-001" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
+    pdo:totalPrice 12.50 .
+
+pdo:Order002 a pdo:Order ;
+    pdo:containMedicine pdo:Amoxicillin ;
+    pdo:deliveredBy pdo:Courier2 ;
+    pdo:deliveryAddress "Cankaya, Ankara" ;
+    pdo:deliveryDate "2026-06-11T16:30:00"^^xsd:dateTime ;
+    pdo:deliveryFee 5.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyA ;
+    pdo:orderDate "2026-06-11T14:15:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-002" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
+    pdo:totalPrice 45.00 .
+
+pdo:Order003 a pdo:Order ;
+    pdo:containMedicine pdo:Metformin ;
+    pdo:deliveredBy pdo:Courier1 ;
+    pdo:deliveryAddress "Kadikoy, Istanbul" ;
+    pdo:deliveryDate "2026-06-12T12:20:00"^^xsd:dateTime ;
+    pdo:deliveryFee 5.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyB ;
+    pdo:orderDate "2026-06-12T10:00:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-003" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
+    pdo:totalPrice 28.00 .
+
+pdo:Order004 a pdo:Order ;
+    pdo:containMedicine pdo:Atorvastatin ;
+    pdo:deliveredBy pdo:Courier3 ;
+    pdo:deliveryAddress "Bornova, Izmir" ;
+    pdo:deliveryFee 7.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyC ;
+    pdo:orderDate "2026-06-13T08:45:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-004" ;
+    pdo:orderStatus "in-transit"^^xsd:string ;
+    pdo:totalPrice 67.00 .
+
+pdo:Order005 a pdo:Order ;
+    pdo:containMedicine pdo:Lisinopril ;
+    pdo:deliveredBy pdo:Courier1 ;
+    pdo:deliveryAddress "Besiktas, Istanbul" ;
+    pdo:deliveryDate "2026-06-14T18:10:00"^^xsd:dateTime ;
+    pdo:deliveryFee 5.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyA ;
+    pdo:orderDate "2026-06-14T16:00:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-005" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
+    pdo:totalPrice 41.50 .
+
+pdo:Order006 a pdo:Order ;
+    pdo:containMedicine pdo:Omeprazole,
+        pdo:VitaminD ;
+    pdo:deliveredBy pdo:Courier2 ;
+    pdo:deliveryAddress "Mamak, Ankara" ;
+    pdo:deliveryFee 5.00 ;
+    pdo:dispatchedFromPharmacy pdo:PharmacyC ;
+    pdo:orderDate "2026-06-15T11:30:00"^^xsd:dateTime ;
+    pdo:orderID "ORD-2026-006" ;
+    pdo:orderStatus "processing"^^xsd:string ;
+    pdo:totalPrice 87.00 .
+
+pdo:Order007 a pdo:Order ;
+    pdo:containMedicine pdo:Ibuprofen ;
+    pdo:deliveredBy pdo:Courier3 ;
+    pdo:deliveryFee 5.00 ;
+    pdo:orderID "ORD-2026-007"^^xsd:string ;
+    pdo:orderStatus "pending"^^xsd:string ;
+    pdo:totalPrice 18.75 .
+
+pdo:Paracetamol a pdo:Medicine,
+        owl:NamedIndividual ;
+    pdo:activeIngredient "paracetamol" ;
+    pdo:brandName "Parol 500mg" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
+    pdo:indicatedFor "fever, pain relief" ;
+    pdo:medicineName "Paracetamol" ;
+    pdo:price 12.50 ;
+    pdo:providedBy pdo:PharmacyA ;
+    pdo:requiresPrescription pdo:Prescription123 ;
+    pdo:stockQuantity 500 ;
+    pdo:strength "500mg" .
+
+pdo:Prescription123 a pdo:Prescription,
+        owl:NamedIndividual ;
+    pdo:dosageInstructions "1 tablet 3 times daily after meals" ;
+    pdo:expirationDate "2026-09-01"^^xsd:date ;
+    pdo:issueDate "2026-06-01"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Mehmet Yilmaz" ;
+    pdo:prescribedForUser pdo:Ayse ;
+    pdo:prescriptionID "RX-2026-001" .
+
+pdo:Prescription321 a pdo:Prescription ;
+    pdo:dosageInstructions "1 tablet once daily at bedtime" ;
+    pdo:expirationDate "2026-09-10"^^xsd:date ;
+    pdo:issueDate "2026-06-10"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Mehmet Yilmaz" ;
+    pdo:prescribedForUser pdo:Ahmet ;
+    pdo:prescriptionID "RX-2026-004" .
+
+pdo:Prescription456 a pdo:Prescription ;
+    pdo:dosageInstructions "1 tablet twice daily for 10 days" ;
+    pdo:expirationDate "2026-07-05"^^xsd:date ;
+    pdo:issueDate "2026-06-05"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Fatma Sahin" ;
+    pdo:prescribedForUser pdo:Mehmet ;
+    pdo:prescriptionID "RX-2026-002" .
+
+pdo:Prescription654 a pdo:Prescription ;
+    pdo:dosageInstructions "1 capsule once daily before breakfast" ;
+    pdo:expirationDate "2026-09-12"^^xsd:date ;
+    pdo:issueDate "2026-06-12"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Elif Demir" ;
+    pdo:prescribedForUser pdo:Fatma ;
+    pdo:prescriptionID "RX-2026-005" .
+
+pdo:Prescription789 a pdo:Prescription ;
+    pdo:dosageInstructions "1 tablet twice daily with meals" ;
+    pdo:expirationDate "2026-08-20"^^xsd:date ;
+    pdo:issueDate "2026-05-20"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Ali Kaya" ;
+    pdo:prescribedForUser pdo:Zeynep ;
+    pdo:prescriptionID "RX-2026-003" .
+
+pdo:Prescription987 a pdo:Prescription ;
+    pdo:dosageInstructions "1 tablet once daily in the morning" ;
+    pdo:expirationDate "2026-09-08"^^xsd:date ;
+    pdo:issueDate "2026-06-08"^^xsd:date ;
+    pdo:issuedByDoctor "Dr. Ali Kaya" ;
+    pdo:prescribedForUser pdo:Ayse ;
+    pdo:prescriptionID "RX-2026-006" .
+
+pdo:VitaminD a pdo:Medicine ;
+    pdo:activeIngredient "cholecalciferol" ;
+    pdo:brandName "D-Cure 25000 IU" ;
+    pdo:dosageForm "solution"^^xsd:string ;
+    pdo:indicatedFor "vitamin D deficiency" ;
+    pdo:medicineName "Vitamin D3" ;
+    pdo:price 55.00 ;
+    pdo:providedBy pdo:PharmacyB ;
+    pdo:stockQuantity 700 ;
+    pdo:strength "25000 IU" .
+
+pdo:Zeynep a pdo:User ;
+    pdo:city "Istanbul" ;
+    pdo:dateOfBirth "1978-11-03"^^xsd:date ;
+    pdo:email "zeynep.demir@email.com" ;
+    pdo:firstName "Zeynep" ;
+    pdo:lastName "Demir" ;
+    pdo:phone "+90 555 333 4455" ;
+    pdo:placesOrder pdo:Order003 .
+
+pdo:Ayse a pdo:User,
+        owl:NamedIndividual ;
+    pdo:city "Istanbul" ;
+    pdo:dateOfBirth "1990-04-15"^^xsd:date ;
+    pdo:email "ayse.kaya@email.com" ;
+    pdo:firstName "Ayse" ;
+    pdo:lastName "Kaya" ;
+    pdo:phone "+90 532 111 2233" ;
+    pdo:placesOrder pdo:Order001,
+        pdo:Order005 .
+
+pdo:Courier2 a pdo:DeliveryPerson ;
+    pdo:city "Ankara" ;
+    pdo:courierID "COR-002" ;
+    pdo:firstName "Hasan" ;
+    pdo:lastName "Ozturk" ;
+    pdo:phone "+90 537 200 3002" ;
+    pdo:rating 4.5 ;
+    pdo:vehicleType "bicycle"^^xsd:string .
+
+pdo:Courier3 a pdo:DeliveryPerson ;
+    pdo:city "Izmir" ;
+    pdo:courierID "COR-003" ;
+    pdo:firstName "Burak" ;
+    pdo:lastName "Koc" ;
+    pdo:phone "+90 539 300 4003" ;
+    pdo:rating 4.9 ;
+    pdo:vehicleType "motorcycle"^^xsd:string .
+
+pdo:Courier1 a pdo:DeliveryPerson,
+        owl:NamedIndividual ;
+    pdo:city "Istanbul" ;
+    pdo:courierID "COR-001" ;
+    pdo:firstName "Kemal" ;
+    pdo:lastName "Arslan" ;
+    pdo:phone "+90 536 100 2001" ;
+    pdo:rating 4.8 ;
+    pdo:vehicleType "motorcycle"^^xsd:string .
+
+pdo:DeliveryPerson a owl:Class .
+
+pdo:Pharmacy a owl:Class .
+
+pdo:PharmacyB a pdo:Pharmacy ;
+    pdo:city "Ankara" ;
+    pdo:openingHours "09:00-21:00" ;
+    pdo:pharmacyID "PH002" ;
+    pdo:pharmacyName "Sağlık Eczanesi" ;
+    pdo:phone "+90 312 444 0202" ;
+    pdo:postalCode "06000" .
+
+pdo:PharmacyC a pdo:Pharmacy ;
+    pdo:city "Izmir" ;
+    pdo:openingHours "08:00-23:00" ;
+    pdo:pharmacyID "PH003" ;
+    pdo:pharmacyName "Yıldız Eczanesi" ;
+    pdo:phone "+90 232 333 0303" ;
+    pdo:postalCode "35000" .
+
+pdo:PharmacyA a pdo:Pharmacy,
+        owl:NamedIndividual ;
+    pdo:city "Istanbul" ;
+    pdo:openingHours "08:00-22:00" ;
+    pdo:pharmacyID "PH001" ;
+    pdo:pharmacyName "Güven Eczanesi" ;
+    pdo:phone "+90 212 555 0101" ;
+    pdo:postalCode "34000" .
+
+pdo:Prescription a owl:Class .
+
+pdo:User a owl:Class .
+
+pdo:Order a owl:Class .
+
+pdo:Medicine a owl:Class .
+

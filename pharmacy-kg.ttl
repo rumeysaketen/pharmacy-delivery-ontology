@@ -1,4 +1,4 @@
-@prefix pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#> .
+﻿@prefix pdo: <http://www.semanticweb.org/rumey/ontologies/2026/3/untitled-ontology-3#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -48,7 +48,7 @@ pdo:Paracetamol
     a pdo:Medicine ;
     pdo:medicineName "Paracetamol" ;
     pdo:brandName "Parol 500mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "500mg" ;
     pdo:price 12.50 ;
     pdo:stockQuantity 500 ;
@@ -61,7 +61,7 @@ pdo:Amoxicillin
     a pdo:Medicine ;
     pdo:medicineName "Amoxicillin" ;
     pdo:brandName "Amoksiklav 875mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "875mg" ;
     pdo:price 45.00 ;
     pdo:stockQuantity 200 ;
@@ -74,7 +74,7 @@ pdo:Metformin
     a pdo:Medicine ;
     pdo:medicineName "Metformin" ;
     pdo:brandName "Glifor 1000mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "1000mg" ;
     pdo:price 28.00 ;
     pdo:stockQuantity 350 ;
@@ -87,7 +87,7 @@ pdo:Ibuprofen
     a pdo:Medicine ;
     pdo:medicineName "Ibuprofen" ;
     pdo:brandName "Brufen 400mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "400mg" ;
     pdo:price 18.75 ;
     pdo:stockQuantity 600 ;
@@ -99,7 +99,7 @@ pdo:Atorvastatin
     a pdo:Medicine ;
     pdo:medicineName "Atorvastatin" ;
     pdo:brandName "Lipitor 20mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "20mg" ;
     pdo:price 67.00 ;
     pdo:stockQuantity 150 ;
@@ -112,7 +112,7 @@ pdo:Omeprazole
     a pdo:Medicine ;
     pdo:medicineName "Omeprazole" ;
     pdo:brandName "Losec 20mg" ;
-    pdo:dosageForm "capsule" ;
+    pdo:dosageForm "capsule"^^xsd:string ;
     pdo:strength "20mg" ;
     pdo:price 32.00 ;
     pdo:stockQuantity 400 ;
@@ -125,7 +125,7 @@ pdo:Lisinopril
     a pdo:Medicine ;
     pdo:medicineName "Lisinopril" ;
     pdo:brandName "Zestril 10mg" ;
-    pdo:dosageForm "tablet" ;
+    pdo:dosageForm "tablet"^^xsd:string ;
     pdo:strength "10mg" ;
     pdo:price 41.50 ;
     pdo:stockQuantity 280 ;
@@ -138,7 +138,7 @@ pdo:VitaminD
     a pdo:Medicine ;
     pdo:medicineName "Vitamin D3" ;
     pdo:brandName "D-Cure 25000 IU" ;
-    pdo:dosageForm "solution" ;
+    pdo:dosageForm "solution"^^xsd:string ;
     pdo:strength "25000 IU" ;
     pdo:price 55.00 ;
     pdo:stockQuantity 700 ;
@@ -269,7 +269,7 @@ pdo:Courier1
     pdo:lastName "Arslan" ;
     pdo:courierID "COR-001" ;
     pdo:phone "+90 536 100 2001" ;
-    pdo:vehicleType "motorcycle" ;
+    pdo:vehicleType "motorcycle"^^xsd:string ;
     pdo:rating 4.8 ;
     pdo:city "Istanbul" .
 
@@ -279,7 +279,7 @@ pdo:Courier2
     pdo:lastName "Ozturk" ;
     pdo:courierID "COR-002" ;
     pdo:phone "+90 537 200 3002" ;
-    pdo:vehicleType "bicycle" ;
+    pdo:vehicleType "bicycle"^^xsd:string ;
     pdo:rating 4.5 ;
     pdo:city "Ankara" .
 
@@ -289,7 +289,7 @@ pdo:Courier3
     pdo:lastName "Koc" ;
     pdo:courierID "COR-003" ;
     pdo:phone "+90 539 300 4003" ;
-    pdo:vehicleType "motorcycle" ;
+    pdo:vehicleType "motorcycle"^^xsd:string ;
     pdo:rating 4.9 ;
     pdo:city "Izmir" .
 
@@ -301,7 +301,7 @@ pdo:Order001
     a pdo:Order ;
     pdo:orderID "ORD-2026-001" ;
     pdo:orderDate "2026-06-10T09:30:00"^^xsd:dateTime ;
-    pdo:orderStatus "delivered" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
     pdo:totalPrice 12.50 ;
     pdo:containMedicine pdo:Paracetamol ;
     pdo:deliveredBy pdo:Courier1 ;
@@ -314,7 +314,7 @@ pdo:Order002
     a pdo:Order ;
     pdo:orderID "ORD-2026-002" ;
     pdo:orderDate "2026-06-11T14:15:00"^^xsd:dateTime ;
-    pdo:orderStatus "delivered" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
     pdo:totalPrice 45.00 ;
     pdo:containMedicine pdo:Amoxicillin ;
     pdo:deliveredBy pdo:Courier2 ;
@@ -327,7 +327,7 @@ pdo:Order003
     a pdo:Order ;
     pdo:orderID "ORD-2026-003" ;
     pdo:orderDate "2026-06-12T10:00:00"^^xsd:dateTime ;
-    pdo:orderStatus "delivered" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
     pdo:totalPrice 28.00 ;
     pdo:containMedicine pdo:Metformin ;
     pdo:deliveredBy pdo:Courier1 ;
@@ -340,7 +340,7 @@ pdo:Order004
     a pdo:Order ;
     pdo:orderID "ORD-2026-004" ;
     pdo:orderDate "2026-06-13T08:45:00"^^xsd:dateTime ;
-    pdo:orderStatus "in-transit" ;
+    pdo:orderStatus "in-transit"^^xsd:string ;
     pdo:totalPrice 67.00 ;
     pdo:containMedicine pdo:Atorvastatin ;
     pdo:deliveredBy pdo:Courier3 ;
@@ -352,7 +352,7 @@ pdo:Order005
     a pdo:Order ;
     pdo:orderID "ORD-2026-005" ;
     pdo:orderDate "2026-06-14T16:00:00"^^xsd:dateTime ;
-    pdo:orderStatus "delivered" ;
+    pdo:orderStatus "delivered"^^xsd:string ;
     pdo:totalPrice 41.50 ;
     pdo:containMedicine pdo:Lisinopril ;
     pdo:deliveredBy pdo:Courier1 ;
@@ -365,7 +365,7 @@ pdo:Order006
     a pdo:Order ;
     pdo:orderID "ORD-2026-006" ;
     pdo:orderDate "2026-06-15T11:30:00"^^xsd:dateTime ;
-    pdo:orderStatus "processing" ;
+    pdo:orderStatus "processing"^^xsd:string ;
     pdo:totalPrice 87.00 ;
     pdo:containMedicine pdo:Omeprazole ;
     pdo:containMedicine pdo:VitaminD ;

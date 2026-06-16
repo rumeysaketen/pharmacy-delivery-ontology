@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 """
-Pharmacy Delivery Ontology – Knowledge Graph Builder & SHACL Validator
+Pharmacy Delivery Ontology - Knowledge Graph Builder & SHACL Validator
 =======================================================================
 This script:
   1. Loads the existing OWL ontology (pharmacy.owl)
@@ -15,7 +16,12 @@ Usage:
 """
 
 import sys
+import io
 from pathlib import Path
+
+# Force UTF-8 output on Windows terminals
+if sys.stdout.encoding and sys.stdout.encoding.lower() not in ('utf-8', 'utf8'):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 
 try:
     from rdflib import Graph, Namespace, RDF, RDFS, OWL, XSD, Literal, URIRef
@@ -96,7 +102,7 @@ def print_summary(g: Graph) -> None:
         count = sum(1 for _ in g.subjects(RDF.type, cls))
         print(f"  {label:<20} : {count} instances")
 
-    print(f"\n  Total triples        : {len(g)}")
+    print("\n  Total triples        : " + str(len(g)))
     print("=" * 60)
 
 
@@ -118,6 +124,7 @@ def run_queries(g: Graph) -> None:
     print("  SPARQL QUERY RESULTS")
     print("=" * 60)
 
+
     for filename, title in QUERIES.items():
         query_file = QUERY_DIR / filename
         if not query_file.exists():
@@ -125,10 +132,10 @@ def run_queries(g: Graph) -> None:
             continue
 
         sparql = query_file.read_text(encoding="utf-8")
-        print(f"\n{'─' * 60}")
-        print(f"  {title}")
-        print(f"  File: {filename}")
-        print("─" * 60)
+        print("\n" + "-" * 60)
+        print("  " + title)
+        print("  File: " + filename)
+        print("-" * 60)
 
         try:
             results = g.query(sparql)
@@ -160,9 +167,9 @@ def run_queries(g: Graph) -> None:
                 row_count += 1
 
             if row_count == 0:
-                print("  (no results – check that the KG individuals match the query patterns)")
+                print("  (no results - check that the KG individuals match the query patterns)")
             else:
-                print(f"\n  → {row_count} row(s) returned.")
+                print("\n  -> " + str(row_count) + " row(s) returned.")
 
         except Exception as exc:
             print(f"  [ERROR] Query failed: {exc}")
@@ -199,9 +206,9 @@ def run_shacl(g: Graph) -> None:
     )
 
     if conforms:
-        print("\n  ✅ Validation PASSED – all instances conform to SHACL shapes.")
+        print("\n  [PASS] Validation PASSED - all instances conform to SHACL shapes.")
     else:
-        print("\n  ❌ Validation found constraint violations:\n")
+        print("\n  [FAIL] Validation found constraint violations:\n")
         print(results_text)
 
     print("=" * 60)
@@ -210,6 +217,8 @@ def run_shacl(g: Graph) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 #  STEP 5 – Build extended KG programmatically (demo)
 # ─────────────────────────────────────────────────────────────────────────────
+
+from decimal import Decimal
 
 def add_demo_individual(g: Graph) -> None:
     """
@@ -223,25 +232,25 @@ def add_demo_individual(g: Graph) -> None:
     # New user
     ali = PDO.Ali
     g.add((ali, RDF.type, PDO.User))
-    g.add((ali, PDO.firstName,  Literal("Ali",            datatype=XSD.string)))
-    g.add((ali, PDO.lastName,   Literal("Ozdemir",        datatype=XSD.string)))
-    g.add((ali, PDO.email,      Literal("ali@email.com",  datatype=XSD.string)))
+    g.add((ali, PDO.firstName,  Literal("Ali",             datatype=XSD.string)))
+    g.add((ali, PDO.lastName,   Literal("Ozdemir",         datatype=XSD.string)))
+    g.add((ali, PDO.email,      Literal("ali@email.com",   datatype=XSD.string)))
     g.add((ali, PDO.phone,      Literal("+90 530 999 8877", datatype=XSD.string)))
 
-    # New order
+    # New order — use plain Literals (no explicit datatype) so SHACL sh:in for orderStatus matches
     order7 = PDO.Order007
-    g.add((order7, RDF.type,         PDO.Order))
-    g.add((order7, PDO.orderID,      Literal("ORD-2026-007", datatype=XSD.string)))
-    g.add((order7, PDO.orderStatus,  Literal("pending",      datatype=XSD.string)))
-    g.add((order7, PDO.totalPrice,   Literal(18.75,          datatype=XSD.decimal)))
-    g.add((order7, PDO.deliveryFee,  Literal(5.00,           datatype=XSD.decimal)))
+    g.add((order7, RDF.type,        PDO.Order))
+    g.add((order7, PDO.orderID,     Literal("ORD-2026-007",   datatype=XSD.string)))
+    g.add((order7, PDO.orderStatus, Literal("pending",         datatype=XSD.string)))
+    g.add((order7, PDO.totalPrice,  Literal(Decimal("18.75"),  datatype=XSD.decimal)))
+    g.add((order7, PDO.deliveryFee, Literal(Decimal("5.00"),   datatype=XSD.decimal)))
     g.add((order7, PDO.containMedicine, PDO.Ibuprofen))
     g.add((order7, PDO.deliveredBy,  PDO.Courier3))
 
-    # Link user → order
+    # Link user -> order
     g.add((ali, PDO.placesOrder, order7))
 
-    print("  Added: pdo:Ali (User) → pdo:Order007 → pdo:Ibuprofen")
+    print("  Added: pdo:Ali (User) -> pdo:Order007 -> pdo:Ibuprofen")
     print(f"  Total triples after extension: {len(g)}")
 
 
@@ -251,7 +260,7 @@ def add_demo_individual(g: Graph) -> None:
 
 def main() -> None:
     print("\n" + "=" * 60)
-    print("  PHARMACY DELIVERY ONTOLOGY – KG BUILDER")
+    print("  PHARMACY DELIVERY ONTOLOGY - KG BUILDER")
     print("=" * 60)
 
     g = load_graphs()
